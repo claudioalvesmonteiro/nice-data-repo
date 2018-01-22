@@ -1,18 +1,12 @@
---
-title: Nineteen Years Later
-author: Harry Potter
-date: July 31, 2016
+---
+title: Análise de Dados em R
+author: Cláudio A. Monteiro
+date: 23 de Janeiro, 2018
 output:
   prettydoc::html_pretty:
     theme: cayman
     highlight: github
 ---
-
-<style>
-body {
-text-align: justify}
-</style>
-
 
 ```{r knitr_init, include=FALSE}
 library(knitr); library(rmdformats)
