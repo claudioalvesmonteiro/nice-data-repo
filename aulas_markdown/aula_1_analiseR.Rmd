@@ -3,9 +3,8 @@ title: Análise de Dados em R
 author: Cláudio A. Monteiro
 date: 23 de Janeiro, 2018
 output:
-  prettydoc::html_pretty:
-    theme: cayman
-    highlight: github
+   rmdformats::readthedown:
+    highlight: kate
 ---
 <style>
 body {
@@ -27,33 +26,30 @@ opts_chunk$set(echo=TRUE,
 opts_knit$set(width=75)
 ```
 
-## **PRÁTICA EM R**
+</br>
 
-![](/Users/mpcp/Documents/Claudio/R/IMAGEM.jpg)
+# **Introdução**
 
+A partir de agora iremos começar a trabalhar diretamente com a linguagem R, compreendendo seus conceitos e operações mais básicas.
 
-### Agora vamos por a mão na massa!
+**Atenção!** Abra um *Script* e salve-o com o nome que desejar, numa pasta específica para seus estudos em R. É muito importante que você acompanhe o texto com o RStudio aberto, inserindo e executando os códigos no Script. Para tal você deve estar com a barra "|" piscando na mesma linha do código que quer executar, então tecle *Ctrl + Enter (Windows/Linux)* ou *Command + Enter (MAC)*.
 
-A partir de agora iremos começar a trabalhar diretamente com a linguagem R, compreendendo seus conceitos e operaões mais básicas.
-
-**Atenço!** Abra um *Script* e salve-o com o nome que desejar, numa pasta especifica para seus estudos em R. é muito importante que você acompanhe o texto com o RStudio aberto, inserindo e executando os códigos no Script. Para tal você deve estar com a barra "|" piscando na mesma linha do código que quer executar, entÃ£o aperte *Ctrl + Enter (Windows/Linux)* ou *Command + Enter (MAC)*.
-
-A funcionalidade mais básica do R Ã© atuar como uma calculadora. Podemos fazer alguns cálculos básicos como:
+A funcionalidade mais básica do R é atuar como uma calculadora. Podemos fazer alguns cálculos básicos como:
 
 
 ```{r, results=FALSE}
 3 + 5               # soma
-183082 - 21982      # subtraço
-92 * 1.6            # multiplicaço
-900 / 30            # divisÃ£o
+183082 - 21982      # subtracao
+92 * 1.6            # multiplicacao
+900 / 30            # divisao
 40**2               # exponencial
 ```
 
 </br>
 
-### **Funço**
+# **Função**
 
-Uma *funço* Ã© um *comando* que irá executar uma sÃ©rie de tarefas que lhe foi designada. Tudo o que *acontece* no R Ã© uma funço. A funço sqrt() , por exemplo, nos retorna a raiz quadrada do que estiver entre parênteses:
+Uma *Função* é um *comando* que irá executar uma série de tarefas que lhe foi designada. Tudo o que *acontece* no R é uma Função. A Função sqrt() , por exemplo, nos retorna a raiz quadrada do que estiver entre parênteses:
 
 ```{r}
 sqrt(9)
@@ -61,11 +57,17 @@ sqrt(9)
 
 </br>
 
-Atenço! Toda funço no R precisa ter uma documentaço especifica de como ela Ã© estruturada e o que cada argumento[^1] da funço significa. Para solicitar esse documento basta executar o seguinte comando:
+**Atenção!** Toda função no R precisa ter uma documentação do que ela faz, como ela é estruturada e o que cada argumento[^1] da função significa. Para solicitar esse documento basta executar o seguinte comando:
 
-[^1]: Os argumentos de uma funço sÃ£o as informaões que ela necessita para ser executada, algumas funões tomam certos argumentos como padrÃ£o e outros Ã© necessário que seja informado algo. Por exemplo, a funço plot() necessita do argumento x (dados no eixo das abscissas) e y (dados no eixo das ordenadas) para ser executada.
+```{r, eval=FALSE}
+help(sqrt)
 
-O R tambÃ©m trabalha com operaões lógicas,  retornando TRUE ou FALSE a partir da lógica que testamos.
+```
+
+
+[^1]: Os argumentos de uma função são as informaões que ela necessita para ser executada, algumas funões tomam certos argumentos como padrão e outros é necessário que seja informado algo. Por exemplo, a Função plot() necessita do argumento x (dados no eixo das abscissas) e y (dados no eixo das ordenadas) para ser executada.
+
+O R também trabalha com operações lógicas,  retornando TRUE ou FALSE a partir da lógica que testamos.
 
 ```{r, results=FALSE}
 
@@ -80,19 +82,19 @@ O R tambÃ©m trabalha com operaões lógicas,  retornando TRUE ou FALSE a parti
 
 </br>
 
-### **Objeto**
+# **Objeto**
 
-Um conceito fundamental para entendermos o funcionamento da linguagem R Ã© o de programaço orientada a objetos.
+Um conceito fundamental para entendermos o funcionamento da linguagem R é o de programação orientada a objetos.
 
-Objetos do mundo real têm duas caracteristicas: todos tem *estado* e *comportamento*. Gatos possuem estado (nome, cor, cheiro, fome) e comportamento (miar, pular, ronronar). Identificar o estado e comportamento de objetos do mundo real Ã© uma ótima maneira de começar a pensar em termos de programaço orientada a objetos.
+Objetos do mundo real têm duas caracteristicas: todos tem *estado* e *comportamento*. Gatos possuem estado (nome, cor, cheiro, fome) e comportamento (miar, pular, ronronar). Identificar o estado e comportamento de objetos do mundo real é uma ótima maneira de começar a pensar em termos de programaço orientada a objetos.
 
-Pare um pouco agora e olhe ao seu redor, observa os objetos que estÃ£o ao seu redor. Para cada objeto que você vê, pergunte a si mesmo: âEm quais possiveis estados que este objeto pode estar?â e âquais possiveis comportamentos este objeto pode ter?â. Anote suas observaões em um papel.
+Pare um pouco agora e olhe ao seu redor, observa os objetos que estão ao seu redor. Para cada objeto que você vê, pergunte a si mesmo:(1) Quais os estados que este objeto pode apresentar? (2) Quais os possiveis comportamentos este objeto pode desempenhar? Anote suas observações em uma folha.
 
- Você deve notar que objetos do mundo real variam em complexidade, a lÃ¢mpada do seu quarto tem dois possiveis estados (ligada e desligada) e dois possiveis comportamentos (ligar, desligar), mas seu ventilador, por exemplo, pode ter uma maior variabilidade de estados (ligado, velocidade atual, desligado, posicionado para cima, posicionado para baixo) e comportamentos (aumentar velocidade, diminuir velocidade, desligar , girar, parar). Você tambÃ©m pode notar que alguns objetos estÃ£o dentro de outros objetos (uma caneta dentro de um estojo, um cafÃ© dentro de um copo). Todas essas observaões do mundo real sÃ£o traduzidas para o mundo da programaço orientada a objetos.
+Você deve notar que objetos do mundo real variam em complexidade, a lâmpada do seu quarto tem dois possiveis estados (ligada e desligada) e dois possiveis comportamentos (ligar, desligar), mas seu ventilador, por exemplo, pode ter uma maior variação de estados (ligado, velocidade atual, desligado, posicionado para cima, posicionado para baixo) e comportamentos (aumentar velocidade, diminuir velocidade, desligar, girar, parar). Você também pode notar que alguns objetos estão dentro de outros objetos (uma caneta dentro de um estojo, um café dentro de um copo). Todas essas observaões do mundo real são traduzidas para o mundo da programaço orientada a objetos.
 
-Objetos computacionais sÃ£o conceitualmente similares a objetos do mundo real: eles tambÃ©m possuem estado e comportamento. Um objeto armazena seu estado em **classes** (varia de acordo com a linguagem de programaço) e expÃµe seu comportamento por meio de **funões**.
+Objetos computacionais são conceitualmente similares a objetos do mundo real: eles também possuem estado e comportamento. Um objeto armazena seu estado em **classes** (varia de acordo com a linguagem de programaço) e expõe seu comportamento por meio de **funções**.
 
-No R, tudo aquilo que **existe** Ã© um objeto. Os objetos salvos aparecem no Environment, localizado no canto direito superior da tela do *RStudio*.
+No R, tudo aquilo que **existe** é um objeto. Os objetos salvos aparecem no *Environment*, localizado no canto direito superior da tela do *RStudio*.
 
 #### Para ilustrar isso, vamos criar objetos! 
 
@@ -106,19 +108,17 @@ X
 ```
 
 
-**Atenço!** Podemos ver nos códigos que os comentários estÃ£o precedidos de cerquilha (#). Tudo o que estiver do seu lado direito será lido pelo R como um comentário e nÃ£o será executado. é muito comum que em trabalhos que vÃ£o ganhando complexidade nos esqueçamos do que cada código está fazendo. Por isso devemos inserir comentários detalhados ao longo de todos os códigos que digitamos pois eles servirÃ£o para nos orientar posteriormente quando quisermos voltar ao que executamos.
+**Atenção!** Podemos ver nos códigos que os comentários estão precedidos de cerquilha (#). Tudo o que estiver à sua direta será lido pelo R como um comentário e não será executado. É bem comum que em trabalhos que vão se tornando mais complexos nós nos esqueçamos do que cada código está fazendo. Por isso devemos inserir comentários detalhados ao longo de todos os códigos que digitamos pois eles servirão para nos orientar (e orientar outros) quando quisermos voltar ao que executamos.
 
-**Atenço!** Devemos nos atentar para criar objetos que sejam concisos em seu nome, identificando bem o que eles representam. Evita-se tambÃ©m o uso de acentos, tantos nos códigos como em comentários.
-
+**Atenção!** Devemos nos atentar para criar objetos que sejam concisos em seu nome, identificando bem o que eles representam. Evita-se também o uso de acentos, tantos nos códigos como em comentários.
 
 </br>
 
+## 1. **Tipos de objetos no R**
 
-### **Tipos de objetos no R**
+Os objetos no R podem armazenar diferentes tipos de informação. As caracteristicas dessas informações e como elas estão organizadas definirão a classe do objeto que as armazena.
 
-Os objetos no R podem armazenar diferentes tipos de informaço. As caracteristicas dessas informaões e como elas estÃ£o organizadas definirÃ£o a classe do objeto que as armazena.
-
-A funço c() combina os valores que estÃ£o entre parênteses. Ela se faz necessária na criaço de um objeto com mais de uma dimensÃ£o. Vale salientar que, no R, as informaões sÃ£o separadas por ',' (virgula) e a decimal por '.' (ponto). 
+A Função c() combina os valores que está entre parênteses. Ela se faz necessária na criação de um objeto com mais de uma dimensão. Vale salientar que no R as informações são separadas por ',' (virgula) e a decimal por '.' (ponto). 
 
 
 #### Logical (lógico)
@@ -132,7 +132,7 @@ class(x1)
 #### Integer (quantitativa discreta)
 ```{r}
 
-x2 <- 1:1000             # combina os nÃºmeros inteiros de 9 a 29 e atribui a x2 
+x2 <- 1:1000             # combina os numeros inteiros de 9 a 29 e atribui a x2 
 x2
 class(x2)
 
@@ -146,7 +146,7 @@ nome
 class(nome)
 
 ```
-**Atenço!** Como podemos observar, para criar objetos do tipo character, devemos colocar as informaões entre aspas.
+**Atenção!** Como podemos observar, para criar objetos do tipo character, devemos colocar as informaões entre aspas.
 
 #### Numeric (quantitativa continua)
 ```{r}
@@ -163,18 +163,20 @@ dados_altura
 class(dados_altura)
 ```
 
-**Atenço!** Com o RStudio aberto será possivel ver no *Environment* todos os objetos que estamos criando.
+**Atenção!** Com o RStudio aberto será possivel ver no *Environment* todos os objetos que estamos criando.
 
-### **Diretório de Trabalho**
+# **Banco de Dados**
 
-O R trabalha com uma pasta especifica em seu computador, importando e salvando arquivos nesta pasta, chamada de *diretório de trabalho* (*Working Directory*). A funço getwd() informa qual o diretório atual em que se está trabalhando:
+## 1. **Diretório de Trabalho**
+
+O R trabalha com uma pasta especifica em seu computador, importando e salvando arquivos nesta pasta, chamada de *diretório de trabalho* (*Working Directory*). A Função getwd() informa qual o diretório atual em que se está trabalhando:
 
 ```{r, results=FALSE}
 getwd()
 ```
 
 
-Crie uma pasta de trabalho para os estudos em R em seu computador e use a funço setwd() para defini-la como seu diretório de trabalho. Clique com o botÃ£o direito do seu mouse nesta pasta, selecione propriedades, copie o caminho computacional daquela pasta, cole no lugar do exemplo entre aspas (certifique-se de que as barras estÃ£o viradas para o lado direito). Por fim, funço list.files() lista todos os arquivos presentes no seu diretório.
+Crie uma pasta de trabalho para os estudos em R em seu computador e use a Função setwd() para defini-la como seu diretório de trabalho. Clique com o botão direito do seu mouse nesta pasta, selecione propriedades, copie o caminho computacional daquela pasta, cole no lugar do exemplo entre aspas (certifique-se de que as barras estão viradas para o lado direito). Por fim, Função list.files() lista todos os arquivos presentes no seu diretório.
 
 ```{r, eval=FALSE}
 
@@ -183,11 +185,26 @@ setwd("INSIRA/SEU/CAMINHO/AQUI/Estudos em R")
 list.files()
 ```
 
+## 2. **Importar Bases**
 
-### **Importar Banco de Dados**
-Para ler um arquivo, algo importante ao saber o formato que ele se encontra. Esse formato deve preencher alguns prÃ©-requisitos das funões de leitura. A tabela abaixo lista as funões para importar os tipos mais comuns segundo a extensÃ£o do arquivo e o pacote necessário.
+Para ler um arquivo, algo importante ao saber o formato que ele se encontra. Esse formato deve preencher alguns pré-requisitos das funões de leitura. A tabela abaixo lista as funões para importar os tipos mais comuns segundo a extensÃ£o do arquivo e o pacote necessário.
 
-encoding = "utf-8"
+
+| **Formato do Arquivo**      | **Função**                   | **Pacote** |
+| --------------------------- |:---------------------------: | :--------: |
+| .csv                        | read.csv()                   | base       |
+| .xls e .xlsx (Excel)        | read_excel()                 | readxl     |
+| .sav (SPSS)                 | read_sav()                   | haven      |
+| .dat (STATA)                | read_stata()                 | haven      |
+| .sas7bdat (SAS)             | read_sas()                   | haven      |
+
+## 3. *Exercício*
+
+a) Entre no portal [Dados Abertos Recife](http://dados.recife.pe.gov.br/dataset/acidentes-de-transito-com-e-sem-vitimas) e baixe a base da CTTU para os acidentes de trânsito em Recife, no ano 2016;
+b) Mova o banco para sua pasta de trabalho;
+c) Carregue o banco no R.
+        
+
 
 
 
