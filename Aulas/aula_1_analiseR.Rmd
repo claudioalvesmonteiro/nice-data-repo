@@ -210,10 +210,7 @@ c) Carregue o banco no R.
 ## 1. **Visualizar Bancos de Dados**
 
 ```{r, echo=FALSE, results='hide',message=FALSE}
-library(readr)
-setwd('C:/Users/Monteiro-DataPC/Documents/GitProjects/aulas_analisededados')
-acidentes_transito_2016 <- as.data.frame(read_delim("Dados/acidentes-transito-2016.csv", 
-    ";", escape_double = FALSE, trim_ws = TRUE))
+acidentes_transito_2016 <- read.csv("C:/Users/Monteiro-DataPC/Documents/R/aulas_analisededados/Dados/acidentes-transito-2016.csv", sep=";", stringsAsFactors=FALSE)
 ```
 
 
@@ -222,6 +219,58 @@ Para visualizar as informações contidas em uma base de dados podemos usar uma 
 
 str(acidentes_transito_2016)   # Nos retorna a estrutura do banco, com informacoes sobre o banco em si e suas variaveis
 View(acidentes_transito_2016)  # Abre uma janela no RStudio na qual é possível visualizar uma planilha da base
+
+head(acidentes_transito_2016)  # Visualizar primeira linhas do banco
+tail(acidentes_transito_2016)  # Visualizar ultimas linhas do banco
+
+
+```
+
+</br>
+
+## 2. **Manipular Estrutura do Banco**
+
+```{r, echo=FALSE, results='hide',message=FALSE}
+
+# selecionar primeira coluna no banco
+acidentes_transito_2016[,1]
+
+# selecionar primeira linha no banco
+acidentes_transito_2016[1,]
+
+# remover primeira coluna no banco e atribuir a novo objeto
+acidentes_transito_2016.2 <- acidentes_transito_2016[,-1]
+
+# remover 10 primeiras linha no banco
+acidentes_transito_2016.2 <- acidentes_transito_2016.2[-c(1:10),]
+
+# visualizar banco acidentes_transito_2016.2
+head(acidentes_transito_2016.2)
+
+
+```
+
+
+```{r, echo=FALSE, results='hide',message=FALSE}
+
+# selecionar coluna "situacao" no banco
+situacao <- acidentes_transito_2016[,c("situacao")]
+
+# visualizar situacao
+situacao
+
+# retirar primeiros 10 casos de situacao e atribuir a situacao
+situacao <- situacao[-c(1:10),]
+
+```
+
+## 2.**Manipulando Dados com Condicionais**
+
+As vezes você quer ir além de simplesmente selecionar uma coluna ou linha especifica. Você pode querer selecionar apenas os casos de acidentes em que houve vítima, os que envolveram ciclistasm, ou ainda os que envolveram moto ou caminhão e deixaram vítima. Para tal podemos trabalhar com operações lógicas utilizando as informações que aprendemos até agora. Vejamos os exemplos abaixo:
+
+```{r, eval=FALSE}
+
+### DESENVOLVER ###
 
 ```
 
