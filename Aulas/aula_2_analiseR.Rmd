@@ -11,6 +11,10 @@ body {
 text-align: justify}
 </style>
 
+```{r setup}
+knitr::opts_knit$set(root.dir = "/home/pacha/Documents/git_projects/aulas_analisededados")
+```
+
 ```{r knitr_init, include=FALSE}
 library(knitr); library(rmdformats)
 
@@ -30,12 +34,12 @@ opts_knit$set(width=75)
 
 # **Manipulação de Dados**
 
-Nesta aula vamos avançar um pouco mais na manipulação e visualização de dados e também executar alguns cálculos estatísticos. O primeiro banco de dados que iremos trabalhar é o [AtlasBrasil](http://www.atlasbrasil.org.br/2013/). Entre no site e selecione *consulta*, depois escolha a espacialidade como *todos os municípios* e selecione o indicador *IDHM* para o ano de 2010, por fim, selecione *ok* e baixe a tabela no ícone de download.
+Nesta aula vamos avançar um pouco mais na manipulação e visualização de dados e também executar alguns cálculos estatísticos. O primeiro banco de dados que iremos trabalhar é o [AtlasBrasil](https://github.com/claudioalvesmonteiro/aulas_analisededados/blob/master/Dados/AtlasBrasil_Consulta.csv). Entre no repositório e selecione *Raw*, depois clique com o botão direito do mouse na página, selecione *salvar como* e salve o banco na sua pasta de trabalho.
 
 Com base no que você já aprendeu, importe o banco de dados no R a partir da linha de comando.
 
 ```{r}
-
+atlas_brasil <- read.csv("Dados/AtlasBrasil_Consulta.csv", stringsAsFactors = F)
 ```
 
 Atenção! Lembre-se de que uma das maiores funcionalidades do R é a replicabilidade das análises. Assim, devemos deixar os códigos salvos em um script que siga uma execução eficiente.
@@ -44,7 +48,99 @@ Depois de carregar o banco, visualize-o e tente identificar um erro na tabela pr
 
 ### Pacote *stringr*
 
-O pacote *stringr* nos permite manipular informações do tipo *character*. Outro
+Outro problema no banco é na variável "IDHM", que está com a decimal demilitada por "," em vez de "." (padrão de decimal usado no R). Se pedirmos para o R nos retornar a classe desta variável temos que ela é da classe *character*. Para trabalharmos com ela vamos substituir a "," pelo "." e para tal utilizaremos o pacote *stringr*.
+
+```{r}
+# classe da variavel IDHM
+class(atlas_brasil$IDHM.2010)
+```
+
+```{r, eval=FALSE}
+# instalar e carregar pacote stringr
+install.packages("stringr", dependencies = T)
+library(stringr)
+```
+
+```{r, echo=FALSE, results='hide',message=FALSE}
+library(stringr)
+```
+
+```{r}
+# vamos primeiro olhar a documentacao da funcao 'str_replace'
+?str_replace
+  
+# substituir "," por "."
+atlas_brasil$IDHM.2010 <- str_replace(atlas_brasil$IDHM.2010, ",", ".")
+
+# classe da variavel
+class(atlas_brasil$IDHM.2010)
+```
+Ao pedir a classe da variável é possível observar que ela ainda permanece como *character*. Transforme-a em numérica.
+
+```{r, echo=FALSE, results='hide',message=FALSE}
+atlas_brasil$IDHM.2010 <- as.numeric(atlas_brasil$IDHM.2010)
+```
+
+</br>
+
+Outra funcionalidade interessante do pacote *stringr* é que podemos detectar casos em uma variável que possuem um padrão específico de letras. Podemos observar na variavel "Espacialidades" que a sigla do estado de cada munícipio está na mesma variável que o nome do mesmo:
+
+```{r}
+head(atlas_brasil$Espacialidades, 20)
+```
+
+Para exemplificiar, podemos criar uma variável no banco que nos informará se a cidade é do Estado de Pernambuco com base na funcao *str_detect*:
+
+```{r}
+# detectar o padrao "PE" na variavel "Espacialidades" e atribuir o resultado a uma nova variavel
+atlas_brasil$pernambuco <- str_detect(atlas_brasil$Espacialidades, "(PE)")
+
+# agora podemos criar uma nova base de dados apenas com os casos de PE
+atlas_pe <- atlas_brasil[atlas_brasil$pernambuco == TRUE,]
+```
+
+</br>
+
+# **Estatísticas Descritivas**
+
+Agora podemos esecutar algumas estatística descritivas para a variável "IDHM", no nosso banco "atlas_pe":
+
+```{r}
+# calcular media
+mean(atlas_pe$IDHM.2010)
+
+# mediana
+median(atlas_pe$IDHM.2010)
+
+# desvio-padrao
+sd(atlas_pe$IDHM.2010)
+
+# funcao summary
+summary(atlas_pe$IDHM.2010)
+```
+
+</br>
+
+# **Gráficos Descritivos**
+
+### Histograma
+
+```{r}
+# carregue o pacote ggplot2
+library(ggplot2)
+
+# executar histograma IDHM para Pernambuco
+ggplot(data = atlas_pe, aes(x = IDHM.2010))+
+  geom_histogram()
+```
+
+
+
+
+
+
+
+
 
 
 
