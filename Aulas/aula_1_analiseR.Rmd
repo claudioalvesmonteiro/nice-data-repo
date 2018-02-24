@@ -288,7 +288,7 @@ acidentes_transito_2016$ciclista <- as.numeric(acidentes_transito_2016$ciclista)
 acid_transit_ciclista2016 <- acidentes_transito_2016[acidentes_transito_2016$ciclista == 1,]
 
 # retirar casos faltantes (NAs) no banco
-acid_transit_ciclista2016 <- acid_transit_ciclista2016[complete.cases(acid_transit_ciclista2016$ciclista),]
+acid_transit_ciclista2016 <- acid_transit_ciclista2016[complete.cases(acid_transit_ciclista2016),]
 
 ```
 
@@ -328,14 +328,16 @@ bairro_acid_ciclista <- bairro_acid_ciclista[order(bairro_acid_ciclista$Freq, de
 # Selecionar apenas os 15 primeiros bairros com maior numero de acidentes
 bairro_acid_ciclista2 <- bairro_acid_ciclista[1:15, ]
 
-# Visualizar banco manipulado
+# visualizar banco manipulado
 bairro_acid_ciclista2
 
+# salvar banco de dados manipulado
+write.csv(bairro_acid_ciclista2, file = "bairros_+15_acidentes_ciclistas.csv")
 ```
 
 </br>
 
-# Nosso primeiro gráfico!!
+### Nosso primeiro gráfico!!
 
 ```{r, ggplot}
 ggplot(data = bairro_acid_ciclista2,  # selecionar o banco de dados
@@ -353,14 +355,10 @@ bairro_acid_ciclista2$Var1 <- factor(bairro_acid_ciclista2$Var1, bairro_acid_cic
 
 # grafico ggplot
 ggplot(data = bairro_acid_ciclista2,  aes(x = Var1, y = Freq ) ) +    
-       geom_col(fill = "black") +  # definir preenchimento das barras
+       geom_col(fill = "black") +  # definir cor de preenchimento das barras
        coord_flip()                # inverter eixos do grafico
 
 ```
-
-
-
-
 
 
 
