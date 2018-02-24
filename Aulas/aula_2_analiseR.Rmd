@@ -44,7 +44,7 @@ Depois de carregar o banco, visualize-o e tente identificar um erro na tabela pr
 
 ### Pacote *stringr*
 
-O pacote *stringr* nos permite manipular informações do tipo *character*
+O pacote *stringr* nos permite manipular informações do tipo *character*. Outro
 
 
 
