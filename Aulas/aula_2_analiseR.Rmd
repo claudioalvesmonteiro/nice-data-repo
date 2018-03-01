@@ -1,5 +1,5 @@
 ---
-title: Introdução à Análise de Dados em R
+title: Análise de Dados em R - Aula 2
 author: Cláudio A. Monteiro
 date: 23 de Janeiro, 2018
 output:
@@ -11,7 +11,7 @@ body {
 text-align: justify}
 </style>
 
-```{r setup}
+```{r setup, echo=FALSE, results='hide',message=FALSE}
 knitr::opts_knit$set(root.dir = "/home/pacha/Documents/git_projects/aulas_analisededados")
 ```
 
@@ -38,17 +38,19 @@ Nesta aula vamos avançar um pouco mais na manipulação e visualização de dad
 
 Com base no que você já aprendeu, importe o banco de dados no R a partir da linha de comando.
 
-```{r}
+```{r, echo=FALSE, results='hide',message=FALSE}
 atlas_brasil <- read.csv("Dados/AtlasBrasil_Consulta.csv", stringsAsFactors = F)
 ```
 
-Atenção! Lembre-se de que uma das maiores funcionalidades do R é a replicabilidade das análises. Assim, devemos deixar os códigos salvos em um script que siga uma execução eficiente.
+**Atenção!** Lembre-se de que uma das maiores funcionalidades do R é a replicabilidade das análises. Assim, devemos deixar os códigos salvos em um script que siga uma execução eficiente.
 
-Depois de carregar o banco, visualize-o e tente identificar um erro na tabela produzida pela plataforma onde o baixamos. Após identificado, corrija-o e salve devidamente os procedimentos usados.
+#### Exercício
+
+Depois de carregar o banco, visualize-o e tente identificar um erro nos casos da tabela. Após identificado, corrija-o com base no que você já aprendeu nas aulas anteriores.
 
 ### Pacote *stringr*
 
-Outro problema no banco é na variável "IDHM", que está com a decimal demilitada por "," em vez de "." (padrão de decimal usado no R). Se pedirmos para o R nos retornar a classe desta variável temos que ela é da classe *character*. Para trabalharmos com ela vamos substituir a "," pelo "." e para tal utilizaremos o pacote *stringr*.
+Outro problema no banco é na variável "IDHM", que está com a decimal demilitada por "," em vez de "." (padrão de decimal usado no R). Se pedirmos para o R nos retornar a classe desta variável podemos ver que ela é da classe *character*. Para trabalharmos com ela vamos substituir a "," pelo "." e para tal utilizaremos o pacote *stringr*.
 
 ```{r}
 # classe da variavel IDHM
@@ -75,7 +77,9 @@ atlas_brasil$IDHM.2010 <- str_replace(atlas_brasil$IDHM.2010, ",", ".")
 # classe da variavel
 class(atlas_brasil$IDHM.2010)
 ```
-Ao pedir a classe da variável é possível observar que ela ainda permanece como *character*. Transforme-a em numérica.
+
+#### Exercício
+Ao pedir a classe da variável é possível observar que ela ainda permanece como *character*. Transforme-a em numérica com base no que você já aprendeu.
 
 ```{r, echo=FALSE, results='hide',message=FALSE}
 atlas_brasil$IDHM.2010 <- as.numeric(atlas_brasil$IDHM.2010)
@@ -83,7 +87,7 @@ atlas_brasil$IDHM.2010 <- as.numeric(atlas_brasil$IDHM.2010)
 
 </br>
 
-Outra funcionalidade interessante do pacote *stringr* é que podemos detectar casos em uma variável que possuem um padrão específico de letras. Podemos observar na variavel "Espacialidades" que a sigla do estado de cada munícipio está na mesma variável que o nome do mesmo:
+Outra funcionalidade interessante do pacote *stringr* é que podemos detectar casos em uma variável que possuem um padrão específico de letras. Podemos observar na variavel "Espacialidades" que a sigla do estado de cada munícipio está na mesma coluna que o nome do mesmo:
 
 ```{r}
 head(atlas_brasil$Espacialidades, 20)
@@ -103,7 +107,7 @@ atlas_pe <- atlas_brasil[atlas_brasil$pernambuco == TRUE,]
 
 # **Estatísticas Descritivas**
 
-Agora podemos esecutar algumas estatística descritivas para a variável "IDHM", no nosso banco "atlas_pe":
+Agora iremos executar algumas estatísticas descritivas para a variável "IDHM", no nosso banco "atlas_pe":
 
 ```{r}
 # calcular media
@@ -123,7 +127,7 @@ summary(atlas_pe$IDHM.2010)
 
 # **Gráficos Descritivos**
 
-### Histograma
+### Histograma e densidade
 
 ```{r}
 # carregue o pacote ggplot2
@@ -132,12 +136,43 @@ library(ggplot2)
 # executar histograma IDHM para Pernambuco
 ggplot(data = atlas_pe, aes(x = IDHM.2010))+
   geom_histogram()
+
+# executar densidade IDHM para Pernambuco
+ggplot(data = atlas_pe, aes(x = IDHM.2010))+
+  geom_density()
+
+# executar ambos no mesmo grafico
+ggplot(data = atlas_pe, aes(x = IDHM.2010))+
+  geom_histogram()+
+  geom_density()
+
 ```
 
+</br>
 
+### Boxplot
 
+```{r}
+# executar boxplot
+ggplot(atlas_pe)+
+  geom_boxplot(aes(y = atlas_pe$IDHM.2010, x = 1))
 
+```
 
+#### Exercício
+
+Uma das principais questões envolvendo o aprendizado do R é a capacidade de encontrar resoluções para procedimentos no R na internet, pois o R detém uma série de comunidades, blogs e forúns online, o que facilita esse processo. Para exemplificar isso faça o seguinte: (1) procure na internet como alterar o título dos eixos X e Y num gráfico *ggplot*; e (2) procure como alterar a cor de fundo do gráfico.
+
+```{r, eval=F}
+## ALTERE OS TITULOS DOS EIXOS X E Y NO GRAFICO ABAIXO, NO SEU SCRIPT
+ggplot(atlas_pe)+
+  geom_boxplot(aes(y = atlas_pe$IDHM.2010, x = 1)) 
+
+## ALTERE A COR DE FUNDO NO GRAFICO ABAIXO, NO SEU SCRIPT
+ggplot(atlas_pe)+
+  geom_boxplot(aes(y = atlas_pe$IDHM.2010, x = 1)) 
+
+```
 
 
 

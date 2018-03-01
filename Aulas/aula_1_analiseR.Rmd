@@ -1,5 +1,5 @@
 ---
-title: Análise de Dados em R
+title: Análise de Dados em R - Aula 1
 author: Cláudio A. Monteiro
 date: 23 de Janeiro, 2018
 output:
