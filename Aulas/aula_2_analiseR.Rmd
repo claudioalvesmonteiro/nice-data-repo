@@ -149,6 +149,7 @@ ggplot(data = atlas_pe, aes(x = IDHM.2010))+
 ```
 
 </br>
+<<<<<<< HEAD
 
 ### Boxplot
 
@@ -169,6 +170,24 @@ ggplot(atlas_pe)+
   geom_boxplot(aes(y = atlas_pe$IDHM.2010, x = 1)) 
 
 ## ALTERE A COR DE FUNDO NO GRAFICO ABAIXO, NO SEU SCRIPT
+=======
+
+### Boxplot
+
+```{r}
+# executar boxplot
+ggplot(atlas_pe)+
+  geom_boxplot(aes(y = atlas_pe$IDHM.2010, x = 1))
+
+```
+
+#### Exercício
+
+Uma das principais questões envolvendo o aprendizado do R é a capacidade de encontrar resoluções para procedimentos no R na internet, pois o R detém uma série de comunidades, blogs, forúns online, e etc., o que facilita esse processo. Para exemplificar isso procure na internet como alterar o título dos eixos X e Y num gráfico *ggplot* e edite nosso último gráfico.
+
+```{r, eval=F}
+## ALTERE OS TITULOS DOS EIXOS X E Y NO GRAFICO ABAIXO, NO SEU SCRIPT
+>>>>>>> 3868f0ccc846a73638f8b5a704b22d8696b9b85d
 ggplot(atlas_pe)+
   geom_boxplot(aes(y = atlas_pe$IDHM.2010, x = 1)) 
 

@@ -1,0 +1,10 @@
+---
+title: "Análise de Dados em R - Aula 3"
+author: "Cláudio A. Monteiro"
+date: "February 25, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
