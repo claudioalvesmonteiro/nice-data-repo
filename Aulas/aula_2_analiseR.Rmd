@@ -1,5 +1,5 @@
 ---
-title: Introdução à Análise de Dados em R
+title: Análise de Dados em R - Aula 2
 author: Cláudio A. Monteiro
 date: 23 de Janeiro, 2018
 output:
@@ -42,7 +42,9 @@ Com base no que você já aprendeu, importe o banco de dados no R a partir da li
 atlas_brasil <- read.csv("Dados/AtlasBrasil_Consulta.csv", stringsAsFactors = F)
 ```
 
-Atenção! Lembre-se de que uma das maiores funcionalidades do R é a replicabilidade das análises. Assim, devemos deixar os códigos salvos em um script que siga uma execução eficiente.
+**Atenção!** Lembre-se de que uma das maiores funcionalidades do R é a replicabilidade das análises. Assim, devemos deixar os códigos salvos em um script que siga uma execução eficiente.
+
+#### Exercício
 
 Depois de carregar o banco, visualize-o e tente identificar um erro na tabela produzida pela plataforma onde o baixamos. Após identificado, corrija-o e salve devidamente os procedimentos usados.
 
@@ -123,7 +125,7 @@ summary(atlas_pe$IDHM.2010)
 
 # **Gráficos Descritivos**
 
-### Histograma
+### Histograma e densidade
 
 ```{r}
 # carregue o pacote ggplot2
@@ -132,12 +134,39 @@ library(ggplot2)
 # executar histograma IDHM para Pernambuco
 ggplot(data = atlas_pe, aes(x = IDHM.2010))+
   geom_histogram()
+
+# executar densidade IDHM para Pernambuco
+ggplot(data = atlas_pe, aes(x = IDHM.2010))+
+  geom_density()
+
+# executar ambos no mesmo grafico
+ggplot(data = atlas_pe, aes(x = IDHM.2010))+
+  geom_histogram()+
+  geom_density()
+
 ```
 
+</br>
 
+### Boxplot
 
+```{r}
+# executar boxplot
+ggplot(atlas_pe)+
+  geom_boxplot(aes(y = atlas_pe$IDHM.2010, x = 1))
 
+```
 
+#### Exercício
+
+Uma das principais questões envolvendo o aprendizado do R é a capacidade de encontrar resoluções para procedimentos no R na internet, pois o R detém uma série de comunidades, blogs, forúns online, e etc., o que facilita esse processo. Para exemplificar isso procure na internet como alterar o título dos eixos X e Y num gráfico *ggplot* e edite nosso último gráfico.
+
+```{r, eval=F}
+## ALTERE OS TITULOS DOS EIXOS X E Y NO GRAFICO ABAIXO, NO SEU SCRIPT
+ggplot(atlas_pe)+
+  geom_boxplot(aes(y = atlas_pe$IDHM.2010, x = 1)) 
+
+```
 
 
 
