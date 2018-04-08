@@ -116,6 +116,7 @@ text-align: justify}
 <h1><strong>Manipulação de Dados</strong></h1>
 <p>Nesta aula vamos avançar um pouco mais na manipulação e visualização de dados e também executar alguns cálculos estatísticos. O primeiro banco de dados que iremos trabalhar é o <a href="https://github.com/claudioalvesmonteiro/aulas_analisededados/blob/master/Dados/AtlasBrasil_Consulta.csv">AtlasBrasil</a>. Entre no repositório e selecione <em>Raw</em>, depois clique com o botão direito do mouse na página, selecione <em>salvar como</em> e salve o banco na sua pasta de trabalho.</p>
 <p>Com base no que você já aprendeu, importe o banco de dados no R a partir da linha de comando.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">atlas_brasil &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;Dados/AtlasBrasil_Consulta.csv&quot;</span>, <span class="dt">stringsAsFactors =</span> F)</code></pre></div>
 <p><strong>Atenção!</strong> Lembre-se de que uma das maiores funcionalidades do R é a replicabilidade das análises. Assim, devemos deixar os códigos salvos em um script que siga uma execução eficiente.</p>
 <div id="exercicio" class="section level4">
 <h4>Exercício</h4>
@@ -225,7 +226,7 @@ atlas_pe &lt;-<span class="st"> </span>atlas_brasil[atlas_brasil<span class="op"
 
 <div id="postamble" data-toggle="wy-nav-shift" class="status">
 <p class="author"><span class="glyphicon glyphicon-user"></span> Cláudio A. Monteiro</p>
-<p class="date"><span class="glyphicon glyphicon-calendar"></span> 23 de Janeiro, 2018</p>
+<p class="date"><span class="glyphicon glyphicon-calendar"></span> Fevereiro, 2018</p>
 </div>
 
 

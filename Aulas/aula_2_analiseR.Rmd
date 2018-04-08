@@ -1,7 +1,7 @@
 ---
 title: Análise de Dados em R - Aula 2
 author: Cláudio A. Monteiro
-date: 23 de Janeiro, 2018
+date: Fevereiro, 2018
 output:
    rmdformats::readthedown:
     highlight: kate
@@ -38,7 +38,7 @@ Nesta aula vamos avançar um pouco mais na manipulação e visualização de dad
 
 Com base no que você já aprendeu, importe o banco de dados no R a partir da linha de comando.
 
-```{r, echo=FALSE, results='hide',message=FALSE}
+```{r, e}
 atlas_brasil <- read.csv("Dados/AtlasBrasil_Consulta.csv", stringsAsFactors = F)
 ```
 

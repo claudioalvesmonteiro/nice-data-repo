@@ -1,7 +1,7 @@
 ---
 title: Análise de Dados em R - Aula 1
 author: Cláudio A. Monteiro
-date: 23 de Janeiro, 2018
+date: Janeiro, 2018
 output:
    rmdformats::readthedown:
     highlight: kate
@@ -209,7 +209,7 @@ c) Carregue o banco no R.
 
 ## 1. **Visualizar Bancos de Dados**
 
-```{r, echo=FALSE, results='hide',message=FALSE}
+```{r, echo = FALSE, results = 'hide', message = FALSE}
 # acidentes_transito_2016 <- read.csv("C:/Users/Monteiro-DataPC/Documents/R/aulas_analisededados/Dados/acidentes-transito-2016.csv", sep=";", stringsAsFactors=FALSE)
 acidentes_transito_2016 <- read.csv("/home/pacha/Documents/git_projects/aulas_analisededados/Dados/acidentes-transito-2016.csv", sep=";", stringsAsFactors=FALSE)
 ```
