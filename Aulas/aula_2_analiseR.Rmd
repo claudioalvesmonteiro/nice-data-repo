@@ -147,6 +147,7 @@ ggplot(data = atlas_pe, aes(x = IDHM.2010))+
   geom_density()
 
 ```
+![Figure 1-1](https://raw.github.com/claudioalvesmonteiro/aulas_analisededados/Aulas/aula_2_analiseR_files/figure-html/unnamed-chunk-10-1.png  "Histograma")
 
 </br>
 
