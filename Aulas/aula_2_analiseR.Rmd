@@ -147,8 +147,17 @@ ggplot(data = atlas_pe, aes(x = IDHM.2010))+
   geom_density()
 
 ```
+# tec1
 ![Histograma](https://raw.github.com/claudioalvesmonteiro/aulas_analisededados/Aulas/aula_2_analiseR_files/figure-html/unnamed-chunk-10-1.png)
 
+# tec2
+![image from redmond barry building unimelb](http://i.imgur.com/RVNmr.jpg)
+
+# tec3
+![image from redmond barry building unimelb](https://github.com/claudioalvesmonteiro/aulas_analisededados/blob/master/Aulas/aula_2_analiseR_files/figure-html/unnamed-chunk-10-2.png)
+
+# tec4
+![image from redmond barry building unimelb](http://github.com/claudioalvesmonteiro/aulas_analisededados/blob/master/Aulas/aula_2_analiseR_files/figure-html/unnamed-chunk-10-2.png)
 
 </br>
 
