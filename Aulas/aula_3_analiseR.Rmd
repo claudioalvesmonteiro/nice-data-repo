@@ -78,6 +78,22 @@ c) Carol foi passear em Lisboa com suas filhas. A mais nova comprou 3 euros de s
 
 </br>
 
+```{r, echo=FALSE, results='hide',message=FALSE}
+# ADD QUESTOUES DE MANIPULACAO MAIS SIMPLES
+
+## 
+
+##
+
+##
+
+##
+
+##
+
+##
+```
+
 #### 4. Com base no *dataframe* que construimos anteriormente, retorne as seguintes informações:
 
 a) Qual a altura média das pessoas?
