@@ -1,5 +1,5 @@
 ---
-title: Análise de Dados em R - Aula 1
+title: Análise de Dados em R - Bloco 1
 author: Cláudio A. Monteiro
 date: Janeiro, 2018
 output:
@@ -211,7 +211,7 @@ c) Carregue o banco no R.
 
 ```{r, echo = FALSE, results = 'hide', message = FALSE}
 # acidentes_transito_2016 <- read.csv("C:/Users/Monteiro-DataPC/Documents/R/aulas_analisededados/Dados/acidentes-transito-2016.csv", sep=";", stringsAsFactors=FALSE)
-acidentes_transito_2016 <- read.csv("/home/pacha/Documents/git_projects/aulas_analisededados/Dados/acidentes-transito-2016.csv", sep=";", stringsAsFactors=FALSE)
+acidentes_transito_2016 <- read.csv("/home/pacha/Documents/git_projects/aulas_analisededados/aulas_particulares/dados/acidentes-transito-2016.csv", sep=";", stringsAsFactors=FALSE)
 ```
 
 

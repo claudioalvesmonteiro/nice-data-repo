@@ -1,30 +1,24 @@
 ---
-title: "Aula 4 - AnÃ¡lise de Dados"
-author: "ClÃ¡udio A. Monteiro"
-date: "April 26, 2018"
-output: html_document
+title: AnÃ¡lise de Dados em R - Bloco 4
+author: Claudio A. Monteiro
+date: Maio, 2018
+output:
+   rmdformats::readthedown:
+    highlight: kate
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+### Baixar um banco de dados da internet
+Uma funcionalidade disponível em R é a de baixar arquivos diretamente da web, a partir do link do arquivo. Vamos baixar o banco "data_inova_2008" disponível (aqui)[https://github.com/claudioalvesmonteiro/municipality-inovation/blob/master/Analysis%20Data/data_inova_2008.csv]. 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+1 - copie o endereço web da página
+2 - 
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r}
+url <- "https://github.com/claudioalvesmonteiro/municipality-inovation/blob/master/Analysis%20Data/data_inova_2008.csv"
+destfile <- "data_inova_2008.csv"
+download.file(url, destfile)
 ```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

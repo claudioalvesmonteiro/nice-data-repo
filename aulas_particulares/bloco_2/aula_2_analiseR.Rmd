@@ -12,7 +12,7 @@ text-align: justify}
 </style>
 
 ```{r setup, echo=FALSE, results='hide',message=FALSE}
-knitr::opts_knit$set(root.dir = "/home/pacha/Documents/git_projects/aulas_analisededados")
+knitr::opts_knit$set(root.dir = "/home/pacha/Documents/git_projects/aulas_analisededados/aulas_particulares")
 ```
 
 ```{r knitr_init, include=FALSE}
@@ -39,7 +39,7 @@ Nesta aula vamos avançar um pouco mais na manipulação e visualização de dad
 Com base no que você já aprendeu, importe o banco de dados no R a partir da linha de comando.
 
 ```{r, e}
-atlas_brasil <- read.csv("Dados/AtlasBrasil_Consulta.csv", stringsAsFactors = F)
+atlas_brasil <- read.csv("dados/AtlasBrasil_Consulta.csv", stringsAsFactors = F)
 ```
 
 **Atenção!** Lembre-se de que uma das maiores funcionalidades do R é a replicabilidade das análises. Assim, devemos deixar os códigos salvos em um script que siga uma execução eficiente.
