@@ -100,7 +100,8 @@ plotEstadoIQB <-
   labs(x = "Estados", y = "Média IQBM")+ 
   # girar barra para horizontal
   coord_flip() 
-  
+
+plotEstadoIQB
 ```
 
 Por fim vamos salvar o grafico no diretorio de trabalho:
