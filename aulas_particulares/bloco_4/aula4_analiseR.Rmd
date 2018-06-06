@@ -1,6 +1,6 @@
 ---
-title: An?lise de Dados em R - Bloco 4
-author: Claudio A. Monteiro
+title: Análise de Dados em R - Bloco 4
+author: Cláudio A. Monteiro
 date: Maio, 2018
 output:
    rmdformats::readthedown:
@@ -12,14 +12,14 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Baixar um banco de dados da internet pelo R
-Uma funcionalidade dispon�vel em R � a de baixar arquivos diretamente da web, a partir do link do arquivo. Vamos baixar o banco "data_inova_2008" dispon�vel [aqui](https://raw.githubusercontent.com/claudioalvesmonteiro/municipality-inovation/master/Analysis%20Data/data_inova_2008.csv).
+Uma funcionalidade disponível em R é a de baixar arquivos diretamente da web, a partir do link do arquivo. Vamos baixar o banco "data_inova_2008" disponível [aqui](https://raw.githubusercontent.com/claudioalvesmonteiro/municipality-inovation/master/Analysis%20Data/data_inova_2008.csv).
 
-1. Copie o endere�o da p�gina web
+1. Copie o endereço da página web
 2. Armazene-o em um objeto como uma *string* 
 3. Armazene o nome do arquivo em outro objeto
-4. Passe o endere�o como primeiro argumento e o nome do arquivo como segundo na fun��o *download.file()*
+4. Passe o endereço como primeiro argumento e o nome do arquivo como segundo na função *download.file()*
 
-**Obs:**O arquivo ser? salvo no seu diret?rio de trabalho atual, verifique-se de que o ambiente se encontra no devido diret?rio. 
+**Obs:**O arquivo será salvo no seu diretório de trabalho atual, verifique-se de que o ambiente se encontra no devido diretório. 
 
 ```{r, include=FALSE}
 url <- "https://raw.githubusercontent.com/claudioalvesmonteiro/municipality-inovation/master/Analysis%20Data/data_inova_2008.csv"
@@ -31,7 +31,7 @@ download.file(url, destfile)
 
 1 - Importe o banco de dados para o R
 
-2 - Informe a estat?stica descritiva (valor m?nimo, m?ximo, m?dia e desvio-padr?o) das seguintes vari?veis do banco: *bur_escol_2008, bur_terc_2008, rec_orcamento_2008, iqb_pcr_2008, cand_age_2008 e cand_sex_2008*
+2 - Informe a estatística descritiva (valor mínimo, máximo, mídia e desvio-padrão) das seguintes variáveis do banco: *bur_escol_2008, bur_terc_2008, rec_orcamento_2008, iqb_pcr_2008, cand_age_2008 e cand_sex_2008*
 
 
 ```{r, include=FALSE}
@@ -39,14 +39,14 @@ download.file(url, destfile)
 data_inova_2008 <- read.csv("data_inova_2008.csv", stringsAsFactors  = F) 
 ```
 
-## Visualiza??o de Dados
+## Visualização de Dados
 
-Agora vamos trabalhar com a visualiza??o gr?fica de algumas informa??es relevantes.
+Agora vamos trabalhar com a visualização gráfica de algumas informaçães relevantes.
 
-### 1. Gr?fico de barra
-Primeiro vamos fazer um gr?fico de barra com a m?dia do Indicador de Qualidade da Burocracia Municipal (IQBM) por estado da federa??o. Temos uma base de dados dos munic?pios, ent?o devemos calcular a m?dia do IQBM de cada estado com base nos valores de seus respectivos munic?pios:
+### 1. Gráfico de barra
+Primeiro vamos fazer um gr?fico de barra com a m?dia do Indicador de Qualidade da Burocracia Municipal (IQBM) por estado da federação. Temos uma base de dados dos municípios, então devemos calcular a mídia do IQBM de cada estado com base nos valores de seus respectivos municípios:
 
-##### A fun??o *aggregate* ? uma ferramente muito ?til na an?lise de dados em R. Ela aplica uma determinada fun??o a um conjunto de valores. Em nosso exemplo queremos aplicar a fun??o *mean()* para os valores do IQBM, por estado.
+##### A função *aggregate* é uma ferramente muito útil na análise de dados em R. Ela aplica uma determinada função a um conjunto de valores. Em nosso exemplo queremos aplicar a função *mean()* para os valores do IQBM, por estado.
 
 ```{r}
 # executar funcao aggregate
@@ -62,7 +62,7 @@ estadoIQB <- aggregate(
 estadoIQB
 ```
 
-##### Agora vamos construir nosso gr�fico:
+##### Agora vamos construir nosso gráfico:
 
 ```{r}
 # carregar pacote
@@ -77,7 +77,7 @@ ggplot(data = estadoIQB, aes(x = estadoIQB$Group.1, y = estadoIQB$x))+
   
 ```
 
-Podemos ainda evoluir a visualiza??o do gr?fico. Vamos dar uma olhada nas possibilidades que o R disp?e:
+Podemos ainda evoluir a visualização do gráfico. Vamos dar uma olhada nas possibilidades que o R dispense:
 
 ```{r}
  # ordena os dados com base na variavel 'x'
@@ -104,7 +104,7 @@ plotEstadoIQB <-
 plotEstadoIQB
 ```
 
-Por fim vamos salvar o grafico no diretorio de trabalho:
+Por fim vamos salvar o gráfico no diretório de trabalho:
 ```{r}
 ggsave("plotEstadoIQB.png", # nome do arquivo a ser salvo
        plotEstadoIQB,       # objeto grafico a ser salvo
