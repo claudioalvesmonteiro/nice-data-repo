@@ -1,0 +1,34 @@
+---
+title: "Análise de Dados em R - Bloco 5"
+author: "Cláudio A. Monteiro"
+date: "Junho, 2018"
+output:
+   rmdformats::readthedown:
+    highlight: kate
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Análise Espacial em R
+
+## Introdução
+
+Agora vamos adentrar no mundo da visualização espacial em R. Como já sabemos, o R conta com diversos pacotes para performar uma série de análises. Aqui vamos trabalhar com alguns pacotes de manipulação de dados geográficos e com o pacote **ggplot2** para a visualização.
+
+Para visualizar informações distribuídas no espaço devemos primeiro ter acesso a uma base cartográfica do espaço que queremos projetar essas informações. Por exemplo, se queremos visualizar a distruibuição da população brasileira no mapa dos estados precisamos de um arquivo com o **desenho cartográfico** do Brasil e os *polígonos* de cada Estado. Esse arquivos podem ter os formatos **.geoJSON**, **.CSV**, **.KML**, **.SHP**, entre outros.
+
+Hoje vamos utilizar o formato **.SHP**, também chamado de **shapefile**. Acesse o link [aqui](https://github.com/claudioalvesmonteiro/municipality-inovation/tree/master/Original%20Data/Geodata) e baixe todos os arquivos com o início "estados_2010" para seu diretório de trabalho, via linha de comando.
+
+## Importando o arquivo
+
+Para importar o arquivo instale o pacote "raster", bem como suas dependências. Neste pacote há a função *shapefile()*, que funciona como a *read.csv()*, mas para arquivos do tipo **.SHP**.
+
+```{r, eval = FALSE}
+# carregar pacote
+library(raster)
+
+# carregar arquivo
+shp_brasil_estados <- shapefile("estados_2010.shp")
+```
