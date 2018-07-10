@@ -19,7 +19,7 @@ Uma funcionalidade disponível em R é a de baixar arquivos diretamente da web, 
 3. Armazene o nome do arquivo em outro objeto
 4. Passe o endereço como primeiro argumento e o nome do arquivo como segundo na função *download.file()*
 
-**Obs:**O arquivo será salvo no seu diretório de trabalho atual, verifique-se de que o ambiente se encontra no devido diretório. 
+**Obs:** o arquivo será salvo no seu diretório de trabalho atual, verifique-se de que o ambiente se encontra no devido diretório. 
 
 ```{r, include=FALSE}
 url <- "https://raw.githubusercontent.com/claudioalvesmonteiro/municipality-inovation/master/Analysis%20Data/data_inova_2008.csv"
@@ -31,8 +31,7 @@ download.file(url, destfile)
 
 1 - Importe o banco de dados para o R
 
-2 - Informe a estatística descritiva (valor mínimo, máximo, mídia e desvio-padrão) das seguintes variáveis do banco: *bur_escol_2008, bur_terc_2008, rec_orcamento_2008, iqb_pcr_2008, cand_age_2008 e cand_sex_2008*
-
+2 - Informe as estatísticas descritivas (valor mínimo, valor máximom, média e desvio-padrão) das seguintes variáveis do banco: *bur_escol_2008, bur_terc_2008, rec_orcamento_2008, iqb_pcr_2008, cand_age_2008 e cand_sex_2008*.
 
 ```{r, include=FALSE}
 # load data
@@ -114,9 +113,6 @@ ggsave("plotEstadoIQB.png", # nome do arquivo a ser salvo
 ```
 ## Exercício
 
-Vamos agora exercitar:
+Agora vamos exercitar:
 
 #### 1. Calcule o número absoluto de municípios inovadores e não-inovadores na base e faça um gráfico de barra com base no que aprendemos até o momento.
-
-
-
