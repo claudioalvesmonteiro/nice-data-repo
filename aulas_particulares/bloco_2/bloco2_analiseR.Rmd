@@ -34,11 +34,11 @@ opts_knit$set(width=75)
 
 # **Manipulação de Dados**
 
-Nesta aula vamos avançar um pouco mais na manipulação e visualização de dados e também executar alguns cálculos estatísticos. O primeiro banco de dados que iremos trabalhar é o [AtlasBrasil](https://github.com/claudioalvesmonteiro/aulas_analisededados/blob/master/Dados/AtlasBrasil_Consulta.csv). Entre no repositório e selecione *Raw*, depois clique com o botão direito do mouse na página, selecione *salvar como* e salve o banco na sua pasta de trabalho.
+Nesta aula vamos avançar um pouco mais na manipulação e visualização de dados e também executar alguns cálculos de estatística descritiva. O primeiro banco de dados que iremos trabalhar é o [AtlasBrasil](https://github.com/claudioalvesmonteiro/aulas_analisededados/blob/master/Dados/AtlasBrasil_Consulta.csv). Entre no repositório e selecione *Raw*, depois clique com o botão direito do mouse na página, selecione *salvar como* e salve o banco na sua pasta de trabalho.
 
 Com base no que você já aprendeu, importe o banco de dados no R a partir da linha de comando.
 
-```{r, e}
+```{r, echo = FALSE, results = 'hide', message = FALSE}
 atlas_brasil <- read.csv("dados/AtlasBrasil_Consulta.csv", stringsAsFactors = F)
 ```
 
@@ -107,20 +107,40 @@ atlas_pe <- atlas_brasil[atlas_brasil$pernambuco == TRUE,]
 
 # **Estatísticas Descritivas**
 
-Agora iremos executar algumas estatísticas descritivas para a variável "IDHM", no nosso banco "atlas_pe":
+Agora iremos baixar outra base de dados, o banco "2018 EPI Country Snapshot" disponível no projeto [Enviromental Performance Index](https://epi.envirocenter.yale.edu/epi-downloads). Entre no repositório, baixe o banco de dados e salve-o na sua pasta de trabalho e importe-o para o R. Iremos usar este banco para executar algumas estatísticas descritivas:
+
+
+```{r, e}
+library(readr)
+EPIdata <- read_csv("bloco_2/data/epi2018countrysnapshotv01.csv")
+```
+
 
 ```{r}
 # calcular media
-mean(atlas_pe$IDHM.2010)
+mean(EPIdata$EPI2018Score)
 
 # mediana
-median(atlas_pe$IDHM.2010)
+median(EPIdata$EPI2018Score)
 
 # desvio-padrao
-sd(atlas_pe$IDHM.2010)
+sd(EPIdata$EPI2018Score)
+
+# valor minimo e maximo
+min(EPIdata$EPI2018Score)
+max(EPIdata$EPI2018Score)
 
 # funcao summary
-summary(atlas_pe$IDHM.2010)
+summary(EPIdata$EPI2018Score)
+```
+
+### Selecionando casos máximos e mínimos
+
+Com base no que aprendemos sobre manipulação de banco de dados é possível deduzir como construir um código que crie um banco de dados com os casos de valor máximo de uma variável e outro com os valores mínimos. Tente desenvolver com base na variável "EPI2018Score".
+
+```{r, echo = FALSE, results = 'hide', message = FALSE}
+EPIdata_max <- EPIdata[EPIdata$EPI2018Score == max(EPIdata$EPI2018Score),]
+EPIdata_min <- EPIdata[EPIdata$EPI2018Score == min(EPIdata$EPI2018Score),]
 ```
 
 </br>
@@ -134,16 +154,11 @@ summary(atlas_pe$IDHM.2010)
 library(ggplot2)
 
 # executar histograma IDHM para Pernambuco
-ggplot(data = atlas_pe, aes(x = IDHM.2010))+
+ggplot(data = EPIdata, aes(x = EPI2018Score))+
   geom_histogram()
 
 # executar densidade IDHM para Pernambuco
-ggplot(data = atlas_pe, aes(x = IDHM.2010))+
-  geom_density()
-
-# executar ambos no mesmo grafico
-ggplot(data = atlas_pe, aes(x = IDHM.2010))+
-  geom_histogram()+
+ggplot(data = EPIdata, aes(x = EPI2018Score))+
   geom_density()
 
 ```
@@ -155,8 +170,8 @@ ggplot(data = atlas_pe, aes(x = IDHM.2010))+
 
 ```{r}
 # executar boxplot
-ggplot(atlas_pe)+
-  geom_boxplot(aes(y = atlas_pe$IDHM.2010, x = 1))
+ggplot(EPIdata)+
+  geom_boxplot(aes(y = EPIdata$EPI2018Score, x = 1))
 
 ```
 
@@ -166,12 +181,12 @@ Uma das principais questões envolvendo o aprendizado do R é a capacidade de en
 
 ```{r, eval=F}
 ## ALTERE OS TITULOS DOS EIXOS X E Y NO GRAFICO ABAIXO, NO SEU SCRIPT
-ggplot(atlas_pe)+
-  geom_boxplot(aes(y = atlas_pe$IDHM.2010, x = 1)) 
+ggplot(data = EPIdata, aes(x = EPI2018Score))+
+  geom_histogram()
 
 ## ALTERE A COR DE FUNDO NO GRAFICO ABAIXO, NO SEU SCRIPT
-ggplot(atlas_pe)+
-  geom_boxplot(aes(y = atlas_pe$IDHM.2010, x = 1)) 
+ggplot(data = EPIdata, aes(x = EPI2018Score))+
+  geom_histogram()
 ```
 
 
