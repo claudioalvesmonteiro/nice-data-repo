@@ -112,7 +112,7 @@ Agora iremos baixar outra base de dados, o banco "2018 EPI Country Snapshot" dis
 
 ```{r, e}
 library(readr)
-EPIdata <- read_csv("bloco_2/data/epi2018countrysnapshotv01.csv")
+EPIdata <- read_csv("dados/epi2018countrysnapshotv01.csv")
 ```
 
 

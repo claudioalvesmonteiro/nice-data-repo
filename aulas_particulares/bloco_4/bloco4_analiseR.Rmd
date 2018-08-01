@@ -11,6 +11,16 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Teste T (t studente test)
+
+```{r}
+getwd()
+library(readr)
+EPIdata <- read_csv("/home/pacha/Documents/git_projects/aulas_analisededados/aulas_particulares/dados/epi2018countrysnapshotv01.csv")
+```
+
+## ANOVA
+
 ## Baixar um banco de dados da internet pelo R
 Uma funcionalidade disponível em R é a de baixar arquivos diretamente da web, a partir do link do arquivo. Vamos baixar o banco "data_inova_2008" disponível [aqui](https://raw.githubusercontent.com/claudioalvesmonteiro/municipality-inovation/master/Analysis%20Data/data_inova_2008.csv).
 
