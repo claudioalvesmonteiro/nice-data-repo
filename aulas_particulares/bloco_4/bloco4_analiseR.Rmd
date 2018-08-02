@@ -11,223 +11,121 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Teste de Qui-quadrado
+# Teste de Qui-quadrado
 
-```{r}
+Para executar o teste de qui-quadrado, baixe e carregue o banco de dados "treat_improve.csv" disponível [neste repositório](https://github.com/claudioalvesmonteiro/aulas_analisededados/tree/master/aulas_particulares/dados). No banco constam os casos de um experimento hipotético em que se encontram as informações do grupo de tratamento e o grupo de controle, que recebram uma droga para melhorar desempenho cognitivo e se os indíviduos apresentaram uma melhora ou não após a aplicação da droga.
+
+```{r, echo=FALSE, results='hide',message=FALSE}
 library(readr)
-df <- read.csv("https://goo.gl/j6lRXD")
+quiData <- read_csv("/home/pacha/Documents/git_projects/aulas_analisededados/aulas_particulares/dados/treat_improve.csv")
 ```
 
 ```{r}
-table(df$treatment, df$improvement)
-chisq.test(df$treatment, df$improvement, correct=FALSE)
+# visualizar estrutura
+str(quiData)
+
+# visualizar contagem dos grupos
+table(quiData$treatment, quiData$improvement)
+```
+```{r}
+# executar teste de qui-quadrado
+chisq.test(quiData$treatment, quiData$improvement, correct=FALSE)
 ```
 
+# Teste T 
 
-## Teste T (t studente test)
+## Amostras Independente
 
+Importe o banco de dados "Pokemon.csv", localizado no mesmo repositório, para carregar informacoes sobre os pokémons e executarmos o teste T.
 
-### Independente
-
-```{r}
+```{r, echo=FALSE, results='hide',message=FALSE}
 library(readr)
 Pokemon <- read_csv("/home/pacha/Documents/git_projects/aulas_analisededados/aulas_particulares/dados/Pokemon.csv")
-
 ```
 
-```{r}
-# independente
-t.test(Pokemon$Attack~Pokemon$Legendary)
+Você viu nas aulas passadas como criar um histograma com o pacote ggplot2. No seu Script execute o código para gerar um gráfico como esse abaixo:
 
-```
-### Emparelhada
-
-```{r, }
-# ratos
-
-# Weight of the mice before treatment
-before <-c(200.1, 190.9, 192.7, 213, 241.4, 196.9, 172.2, 185.5, 205.2, 193.7)
-# Weight of the mice after treatment
-after <-c(392.9, 393.2, 345.1, 393, 434, 427.9, 422, 383.9, 392.3, 352.2)
-# Create a data frame
-my_data <- data.frame( 
-                group = rep(c("before", "after"), each = 10),
-                weight = c(before,  after)
-                )
-
-res <- t.test(weight ~ group, data = my_data, paired = TRUE)
-```
-
-## ANOVA
-
-## one way
-
-```{r}
-Input = ("
- id Sex     Genotype  Activity
-  1 male    ff        1.884
-  2 male    ff        2.283
-  3 male    fs        2.396
-  4 female  ff        2.838  
-  5 male    fs        2.956
-  6 female  ff        4.216
-  7 female  ss        3.620
-  8 female  ff        2.889  
-  9 female  fs        3.550
- 10 male    fs        3.105
- 11 female  fs        4.556
- 12 female  fs        3.087
- 13 male    ff        4.939
- 14 male    ff        3.486
- 15 female  ss        3.079
- 16 male    fs        2.649
- 17 female  fs        1.943
- 19 female  ff        4.198
- 20 female  ff        2.473
- 22 female  ff        2.033 
- 24 female  fs        2.200
- 25 female  fs        2.157
- 26 male    ss        2.801
- 28 male    ss        3.421
- 29 female  ff        1.811
- 30 female  fs        4.281
- 32 female  fs        4.772
- 34 female  ss        3.586
- 36 female  ff        3.944
- 38 female  ss        2.669
- 39 female  ss        3.050
- 41 male    ss        4.275 
- 43 female  ss        2.963
- 46 female  ss        3.236
- 48 female  ss        3.673
- 49 male    ss        3.110
-")
-
-Data = read.table(textConnection(Input),header=TRUE)
-
-res.aov2 <- aov(len ~ supp + dose, data = my_data)
-summary(res.aov2)
-
-```
-
-```{r}
+```{r, echo=FALSE}
+# ggplot histograma
 library(ggplot2)
-ggplot(data = Pokemon, aes(x=Pokemon$Type1, y=Pokemon$Total)) + geom_boxplot(aes(fill=Pokemon$Type1))
+ggplot(data = Pokemon, aes(x = Pokemon$Total))+
+  geom_histogram()
+```
 
+Abaixo segue um gráfico de densidade, que assim como o histograma, mostra a distribuição da variável.
+
+```{r}
+# ggplot densidade
+ggplot(data = Pokemon, aes(x = Pokemon$Total))+
+  geom_density()
+```
+
+```{r}
+# executar teste T
+t.test(Pokemon$Total~Pokemon$Legendary)
+```
+
+## Amostras Emparelhadas
+
+Para executar o teste T para amostras emparelhadas vamos importar um banco de dados com os pesos de ratos antes e depois de se alimentarem com uma nova ração.
+
+```{r, echo=FALSE, results='hide',message=FALSE}
+meusRatos <- read_csv("/home/pacha/Documents/git_projects/aulas_analisededados/aulas_particulares/dados/ratosData.csv")
+```
+
+```{r}
+# visualizar estrutura do banco
+str(meusRatos)
+```
+
+```{r}
+# executar teste t para amostras emparelhadas
+teste <- t.test(peso ~ grupo, data = meusRatos, paired = TRUE)
+teste
+```
+
+# ANOVA
+
+## One Way
+
+Para comparar as médias entre dois grupos ou mais utilizamos o teste ANOVA, nesse temos apenas uma variavel categórica na análise então usamos One Way ANOVA. Para executar este teste vamos utilizar novamente a base de dados de Pokemóns.
+
+Primeiramente vamos visualizar as estatísticas descritivas de cada grupo, dada uma determinada variável, a partir do gráfico de caixa (boxplot):
+
+```{r}
+# visualizar estatisticas descritivass
+ggplot(data = Pokemon, aes(x=Pokemon$Type1, y=Pokemon$Total)) +
+  geom_boxplot(aes(fill=Pokemon$Type1))
+```
+
+```{r}
+# executar e visualizar modelo ANOVA
 fit <- aov(Total ~ Type1, data=Pokemon) 
 summary(fit)
+```
 
+Podemos também executar o teste Tukey Honest Significant Differences para testar diferencas entre cada um dps grupos:
+
+```{r}
+# executar e visualizar o teste Tukey HSD
 x <- TukeyHSD(fit, conf.level = 0.95)
+x
+```
 
-datap <- data.frame(comparacao=rownames(x$Type1),x$Type1)
+Podemos ainda selecionar apenas as comparacoes que apresentam resultados significativos, a um p-valor menor que 0.05:
+
+```{r}
+datap <- data.frame(x$Type1)
 datacomp<-  datap[datap$p.adj < 0.05,]
+datacomp
 ```
 
-## two way
-
-
-## Baixar um banco de dados da internet pelo R
-Uma funcionalidade disponível em R é a de baixar arquivos diretamente da web, a partir do link do arquivo. Vamos baixar o banco "data_inova_2008" disponível [aqui](https://raw.githubusercontent.com/claudioalvesmonteiro/municipality-inovation/master/Analysis%20Data/data_inova_2008.csv).
-
-1. Copie o endereço da página web
-2. Armazene-o em um objeto como uma *string* 
-3. Armazene o nome do arquivo em outro objeto
-4. Passe o endereço como primeiro argumento e o nome do arquivo como segundo na função *download.file()*
-
-**Obs:** o arquivo será salvo no seu diretório de trabalho atual, verifique-se de que o ambiente se encontra no devido diretório. 
-
-```{r, include=FALSE}
-url <- "https://raw.githubusercontent.com/claudioalvesmonteiro/municipality-inovation/master/Analysis%20Data/data_inova_2008.csv"
-destfile <- "data_inova_2008.csv"
-download.file(url, destfile)
-```
-
-## Manipulando a base
-
-1 - Importe o banco de dados para o R
-
-2 - Informe as estatísticas descritivas (valor mínimo, valor máximom, média e desvio-padrão) das seguintes variáveis do banco: *bur_escol_2008, bur_terc_2008, rec_orcamento_2008, iqb_pcr_2008, cand_age_2008 e cand_sex_2008*.
-
-```{r, include=FALSE}
-# load data
-data_inova_2008 <- read.csv("data_inova_2008.csv", stringsAsFactors  = F) 
-```
-
-## Visualização de Dados
-
-Agora vamos trabalhar com a visualização gráfica de algumas informaçães relevantes.
-
-### 1. Gráfico de barra
-Primeiro vamos fazer um gráfico de barra com a média do Indicador de Qualidade da Burocracia Municipal (IQBM) por estado da federação. Temos uma base de dados dos municípios, então devemos calcular a mídia do IQBM de cada estado com base nos valores de seus respectivos municípios:
-
-#### A função *aggregate* é uma ferramente muito útil na análise de dados em R. Ela aplica uma determinada função a um conjunto de valores. Em nosso exemplo queremos aplicar a função *mean()* para os valores do IQBM, por estado.
+## Two Way
 
 ```{r}
-# executar funcao aggregate
-estadoIQB <- aggregate(
-  # define a variavel de calculo
-  x = data_inova_2008$iqb_pcr_2008,     
-  # define a variavel categorica dos estados
-  by = list(data_inova_2008$Nome_UF),   
-  # define a funcao a ser aplicada
-  FUN = mean)                          
+ovelhasData<- read_csv("/home/pacha/Documents/git_projects/aulas_analisededados/aulas_particulares/dados/sheepData.csv")
 
-# visualizar resultado
-estadoIQB
+res.aov2 <- aov(Sexual_Activity ~ Sex + Genotype, data = ovelhasData)
+summary(res.aov2)
 ```
 
-#### Agora vamos construir nosso gráfico:
-
-```{r}
-# carregar pacote
-library(ggplot2)
-
-# define a base de dados, eixo x e eixo y
-ggplot(data = estadoIQB, aes(x = estadoIQB$Group.1, y = estadoIQB$x))+ 
-  # define o tipo de barra
-  geom_bar(stat = "identity")+ 
-  # girar barra para horizontal
-  coord_flip() 
-  
-```
-
-Podemos ainda evoluir a visualização do gráfico. Vamos dar uma olhada nas possibilidades que o R dispense:
-
-```{r}
- # ordena os dados com base na variavel 'x'
-estadoIQB <- estadoIQB[order(estadoIQB$x),]
-# tranforma os nomes em fatores com os niveis da ordem
-estadoIQB$Group.1 <- factor(estadoIQB$Group.1, levels = estadoIQB$Group.1) 
-
-# arredondar valores
-estadoIQB$x <- round(estadoIQB$x, 2)
-
-# novo grafico
-plotEstadoIQB <- 
-  # define a base de dados, eixo x e eixo y
-  ggplot(data = estadoIQB, aes(x = estadoIQB$Group.1, y = estadoIQB$x))+ 
-  # define o tipo de barra e a cor
-  geom_bar(stat = "identity", fill = "#15041c")+ 
-  # adicionar os valores nas barras, define tamanho e posicao
-  geom_text(aes(label = estadoIQB$x), size = 3, nudge_y = 0.025)+ 
-  # renomear os eixos
-  labs(x = "Estados", y = "Média IQBM")+ 
-  # girar barra para horizontal
-  coord_flip() 
-
-plotEstadoIQB
-```
-
-Por fim vamos salvar o gráfico no diretório de trabalho:
-```{r}
-ggsave("plotEstadoIQB.png", # nome do arquivo a ser salvo
-       plotEstadoIQB,       # objeto grafico a ser salvo
-       width = 7,           # tamanho horizontal
-       height = 7,          # tamanho vertical
-       units = "in")        # unidade de medida (in = inches = polegadas)
-```
-## Exercício
-
-Agora vamos exercitar:
-
-#### 1. Calcule o número absoluto de municípios inovadores e não-inovadores na base e faça um gráfico de barra com base no que aprendemos até o momento.
