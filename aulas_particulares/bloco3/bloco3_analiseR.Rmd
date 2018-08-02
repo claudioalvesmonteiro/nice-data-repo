@@ -1,5 +1,5 @@
 ---
-title: Análise de Dados em R - Bloco 4
+title: Análise de Dados em R - Bloco 3
 author: Cláudio A. Monteiro
 date: Maio, 2018
 output:
@@ -93,7 +93,7 @@ Para comparar as médias entre dois grupos ou mais utilizamos o teste ANOVA, nes
 Primeiramente vamos visualizar as estatísticas descritivas de cada grupo, dada uma determinada variável, a partir do gráfico de caixa (boxplot):
 
 ```{r}
-# visualizar estatisticas descritivass
+# visualizar boxplot por grupo
 ggplot(data = Pokemon, aes(x=Pokemon$Type1, y=Pokemon$Total)) +
   geom_boxplot(aes(fill=Pokemon$Type1))
 ```
@@ -122,10 +122,39 @@ datacomp
 
 ## Two Way
 
+Para executar o teste Two Way ANOVA vamos trabalhar com o banco hipotético "sheepData.csv", com dados do sexo, tipo genético e desempenho sexual das ovelhas.
+
 ```{r}
 ovelhasData<- read_csv("/home/pacha/Documents/git_projects/aulas_analisededados/aulas_particulares/dados/sheepData.csv")
+```
 
+```{r}
+str(ovelhasData)
+```
+
+```{r}
+# executar e visualizar two way ANOVA
 res.aov2 <- aov(Sexual_Activity ~ Sex + Genotype, data = ovelhasData)
 summary(res.aov2)
 ```
+
+# Extra
+
+Um pacote interessante desenvolvido para o R é pacote *viridis* que define algumas paletas de cores mais interessantes para visualização gráfica. Instale e carregue esse pacote para reproduzir o gráfico de múltiplos boxplots.
+
+```{r}
+# carregar pacote
+library(viridis)
+
+# visualizar boxplot por grupo e definir preechimento com viridis
+ggplot(data = Pokemon, aes(x=Pokemon$Type1, y=Pokemon$Total)) +
+  geom_boxplot(aes(fill=Pokemon$Type1))+
+  scale_fill_viridis(discrete = TRUE)
+
+# visualizar documentacao da funcao
+?scale_fill_viridis
+```
+
+
+
 
