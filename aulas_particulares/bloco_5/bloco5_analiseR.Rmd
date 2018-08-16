@@ -11,47 +11,4 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Análise Espacial em R
-
-## Introdução
-
-Agora vamos adentrar no mundo da visualização espacial em R. Como já sabemos, o R conta com diversos pacotes para performar uma série de análises. Aqui vamos trabalhar com alguns pacotes de manipulação de dados geográficos e com o pacote **ggplot2** para a visualização.
-
-Para visualizar informações distribuídas no espaço devemos primeiro ter acesso a uma base cartográfica do espaço que queremos projetar essas informações. Por exemplo, se queremos visualizar a distruibuição da população brasileira no mapa dos estados precisamos de um arquivo com o **desenho cartográfico** do Brasil e os *polígonos* de cada Estado. Esse arquivos podem ter os formatos **.geoJSON**, **.CSV**, **.KML**, **.SHP**, entre outros.
-
-Hoje vamos utilizar o formato **.SHP**, também chamado de **shapefile**. Acesse o link [aqui](https://github.com/claudioalvesmonteiro/municipality-inovation/tree/master/Original%20Data/Geodata) e baixe todos os arquivos com o início "estados_2010" para seu diretório de trabalho.
-
-## Importando o arquivo
-
-Para importar o arquivo instale o pacote "raster", bem como suas dependências. Neste pacote há a função *shapefile()*, que funciona como a *read.csv()*, mas para arquivos do tipo **.SHP**.
-
-```{r}
-# carregar pacote
-library(raster)
-
-# carregar arquivo
-shp_brasil_estados <- shapefile("dados/estados_2010.shp")
-```
-
-## Visualização do Shapefile
-```{r}
-# carregar pacote de visualizacao
-library(ggplot2)
-
-# tranformar shapefile em polygonsdataframe
-data_fortity <- fortify(shp_brasil_estados, region = "nome")
-
-# produzir mapa
-ggplot(data = shp_brasil_estados@data, aes(map_id = shp_brasil_estados@data$nome)) + 
-  geom_map(colour = grey(0.85),  map = data_fortity) +
-  expand_limits(x = data_fortity$long, y = data_fortity$lat) +
-  coord_fixed(1) 
-
-```
-
-
-
-
-
-
 

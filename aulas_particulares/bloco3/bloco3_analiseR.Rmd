@@ -124,7 +124,7 @@ datacomp
 
 Para executar o teste Two Way ANOVA vamos trabalhar com o banco hipotético "sheepData.csv", com dados do sexo, tipo genético e desempenho sexual das ovelhas.
 
-```{r}
+```{r, echo=FALSE, results='hide',message=FALSE}
 ovelhasData<- read_csv("/home/pacha/Documents/git_projects/aulas_analisededados/aulas_particulares/dados/sheepData.csv")
 ```
 
