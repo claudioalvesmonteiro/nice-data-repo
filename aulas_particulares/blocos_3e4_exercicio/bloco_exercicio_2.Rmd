@@ -76,7 +76,7 @@ ggplot(data = estadoIQB, aes(x = estadoIQB$Group.1, y = estadoIQB$x))+
   
 ```
 
-Podemos ainda evoluir a visualização do gráfico. Vamos dar uma olhada nas possibilidades que o R dispense:
+Podemos ainda evoluir a visualização do gráfico. Vamos dar uma olhada nas possibilidades:
 
 ```{r}
  # ordena os dados com base na variavel 'x'

@@ -1,0 +1,252 @@
+---
+title: "Análise de Dados"
+date: "`r Sys.Date()`"
+author: "Cláudio A. Monteiro"
+output:
+  rmdformats::readthedown:
+    highlight: kate
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Teste de correlação de Peason
+
+```{r}
+# carregar e visualizar dados
+library(readr); library(ggplot2)
+multas_receita <- read_csv("5/dados/multas_receita.csv")
+data.frame(multas_receita)
+```
+
+```{r}
+# executar teste entre mantidade de multas e receita arrecadada
+cor(multas_receita$quantidade_de_multas_arrecadadas, multas_receita$receita_repassada_ao_detran)
+cor.test(multas_receita$quantidade_de_multas_arrecadadas, multas_receita$receita_repassada_ao_detran)
+```
+
+# Visualização de Correlação
+
+## Gráfico de Dispersão-ponto (scatter-plot)
+
+```{r}
+# carregar pacotes
+library(ggplot2)
+library(scales)
+
+# executar grafico
+ggplot(multas_receita, aes(x=quantidade_de_multas_arrecadadas, y=receita_repassada_ao_detran)) +
+  geom_point()
+
+# executar grafico com edicoes
+ggplot(multas_receita, aes(x=quantidade_de_multas_arrecadadas, y=receita_repassada_ao_detran)) +
+  geom_point(color="darkred")+
+  scale_y_continuous(labels = function(x) format(x, scientific = FALSE))+
+  labs(title = "Relação entre receita arrecadada e número de multas no DETRAN",
+       x = "Quantidade de Multas",
+       y = "Receita Arrecadada")
+```
+
+## Matriz de Correlação
+
+```{r}
+# executar correlacao entre variaveis no banco e salvar num objeto
+cormat <- cor(multas_receita[,c(3:5)])
+head(cormat)
+
+# transformar estrutura do banco
+library(reshape2)
+melted_cormat <- melt(cormat)
+head(melted_cormat)
+```
+
+```{r}
+# executar grafico de matriz de correlacao
+ggplot(data = melted_cormat, aes(x=Var1, y=Var2, fill=value)) + 
+  geom_tile()
+```
+
+# Visualização de Dados Avançada
+
+## Criação e definição de temas ggplot2
+
+```{r}
+# visualizr estrutura do tema "theme_minimal"
+theme_minimal
+
+# criar um tema próprio com base no ggplot
+tema_massa <- function(base_size = 12, base_family = "") {
+  theme_minimal(base_size = base_size, base_family = base_family) %+replace% 
+    theme(axis.ticks = element_line(size = 1, colour = "grey70" ),
+          axis.text.x = element_text(colour= "black",size=8,hjust=.5,vjust=.5,face="plain"),
+          axis.text.y = element_text(colour="black",size=8,angle=0,hjust=1,vjust=0,face="plain"), 
+          axis.title.x = element_text(colour="black",size=9,angle=0,hjust=.5,vjust=0,face="plain"),
+          axis.title.y = element_text(colour="black",size=11,angle=90,hjust=.5,vjust=0.5,face="plain"),
+          title = element_text(colour="black",size=9,angle=0,hjust=.5,vjust=.5,face="plain"),
+          panel.grid.major = element_line(colour = grey(0.85)), 
+          panel.grid.minor = element_line(colour = grey(1)),
+          legend.key.size = unit(9, "mm"),
+          legend.text = element_text(size = 9),
+          legend.title = element_text(size = 9),
+          axis.line = element_line(size = 1, colour = "grey70"))
+}
+
+```
+
+```{r}
+# grafico com tema editado
+ggplot(data = melted_cormat, aes(x=Var1, y=Var2, fill=value)) + 
+  geom_tile()+
+  tema_massa()
+
+# editar grafico diretamente no codigo
+ggplot(data = melted_cormat, aes(x=Var1, y=Var2) )+ 
+  geom_tile(aes( fill=value))+
+  labs(x = "", y = "")+
+  guides(fill=guide_legend(title="Correlação de Pearson"))+
+  tema_massa()%+replace% 
+  theme(axis.text.x = element_text(size=10, angle = 50, hjust=1,vjust=.9,face="plain")) 
+```
+
+## Gráfico de Linha
+
+### Baseado no Ano
+
+```{r}
+# carregar pacotes 
+library(ggrepel)
+
+# agregar valores por ano
+dataAno <- aggregate(multas_receita$receita_repassada_ao_detran, by = list(ano = multas_receita$ano), sum)
+
+# grafico 
+ggplot(data = dataAno, aes(x = ano, y = x, group = 1)) +
+  geom_line(color = "#003152", size = 1.3) +
+  geom_label_repel(data = dataAno, aes(x = ano, y = x, label = dataAno$x), size= 3.2)+
+  labs(y= "Receita Bruta Repassada ao DETRAN")+
+  tema_massa()
+```
+
+### Edições Avançadas (baseada no mês)
+
+```{r}
+
+#========================================#
+# Receita arrecadada por mes no DETRAN
+#========================================#
+
+# padronizar nomes
+multas_receita$receita_repassada_ao_detran[multas_receita$receita_repassada_ao_detran == 0]<- NA
+multas_receita$total_das_despesas_com_recursos_de_multas[multas_receita$total_das_despesas_com_recursos_de_multas == 0]<- NA
+
+#func.mes <- function(varMes, varAno, varY, nome, money = FALSE)
+
+#==== ordernar meses e anos ====#
+
+# criar fatorNA com meses
+multas_receita$Mes2 <- factor(multas_receita$mes, levels = c("JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"))
+
+# ordenar anos
+multas_receita$Ano <- factor(multas_receita$ano, levels = c("2016", "2017", "2018")) 
+
+# criar dataframe para combinar nomes mes/ano
+dataMes <- data.frame(table(multas_receita$Mes2, multas_receita$ano))
+
+#Retirar Meses sem info
+dataMes <- dataMes[-c(31:36),]
+
+# combinar nomes do mes/ano para visualizacao no grafico
+dataMes$date <-  with(dataMes, paste0(dataMes$Var1, "/",  dataMes$Var2))
+dataMes$date <- factor(dataMes$date, levels = dataMes$date)
+
+# inserir dados no dataframe
+dataMes$Freq <- multas_receita$receita_repassada_ao_detran
+dataMes <- dataMes[-1,]
+
+# criar label monetaria
+dataMes$label <- paste0("R$", as.character(dataMes$Freq), ",00")
+
+# inserir pontos das casas
+library(stringi)
+stri_sub(dataMes$label, -6, 0) <- "."
+stri_sub(dataMes$label, -10, 0) <- "."
+
+# tratar label p/ destacar valores no grafico
+dataMes$labelA <- NA
+dataMes$Freq[order(dataMes$Freq)] # visualizar ordem
+dataMes$labelA[dataMes$Freq > 29752442 ] <- dataMes$label[dataMes$Freq > 29752442]
+dataMes$labelA[dataMes$Freq < 14376249 ] <- dataMes$label[dataMes$Freq < 14376249 ]
+
+#==== grafico ====#
+ggplot(data = dataMes, aes(x = date, y = Freq, group = 1)) +
+  geom_line(color = "#003152", size = 1.3) +
+  stat_smooth(method = lm, color= "#c77521", se = F)+
+geom_label_repel(data = dataMes, aes(x = date, y = Freq, label = dataMes$labelA), size= 3.2)+
+  labs(x = "", y= "Receita Bruta Repassada ao DETRAN")+
+ scale_x_discrete()+
+  tema_massa()%+replace% 
+  theme(axis.text.x = element_text(size=10, angle = 50, hjust=1,vjust=.9,face="plain")) 
+```
+
+```{r}
+# visualizar media
+summary(dataMes$Freq)
+
+# soma do ano
+sum(dataMes$Freq[dataMes$Var2 == 2017])
+```
+
+## Gráfico de Barra
+
+```{r}
+#========================================#
+# Frota de Veiculos em SP por tipo
+
+# carregar base
+dataTipo <- read_csv("5/dados/dataTipo.csv")
+
+# carregar pacote
+library(viridis)
+
+# ordenar
+dataTipo$Group.2 = factor(dataTipo$Group.2 , levels = unique(dataTipo$Group.2[order(dataTipo$x)]), ordered=TRUE)
+
+# label
+dataTipo$label <- dataTipo$x
+stri_sub(dataTipo$label, -3, 0) <- "."
+stri_sub(dataTipo$label, -7, 0) <- "."
+
+# grafico
+ggplot(dataTipo, aes(dataTipo$Group.1, dataTipo$x)) +   
+  geom_bar(aes(fill = dataTipo$Group.2), position = "dodge", stat="identity")+
+ geom_label(data = dataTipo, 
+                  aes(dataTipo$Group.1, 
+                      dataTipo$x, 
+                      fill = dataTipo$Group.2, 
+                      label = dataTipo$label),
+                  hjust=0.5,
+                  vjust=.5,
+                  size = 3.2,
+                  color = "white",
+                  position = position_dodge(0.9))+
+  scale_fill_manual(values=c("black",viridis(7)[-7]))+
+  labs(y="Número de Veículos", x="")+
+  guides(fill=guide_legend(title="Tipos de Veículos"))+
+  coord_flip()+
+  theme_minimal() %+replace% 
+  theme(axis.ticks = element_line(size = 1, colour = "grey70" ),
+        axis.text.x = #element_text(colour= "black",size=9,hjust=.5,vjust=.5,face="plain")
+          element_blank(),
+        axis.text.y = element_text(colour="black",size=9,angle=0,hjust=1,vjust=0,face="plain"), 
+        axis.title.x = element_text(colour="black",size=9,angle=0,hjust=.5,vjust=0,face="plain"),
+        axis.title.y = element_text(colour="black",size=11,angle=90,hjust=.5,vjust=0.5,face="plain"),
+        title = element_text(colour="black",size=9,angle=0,hjust=.5,vjust=.5,face="plain"),
+        panel.grid.major = element_line(colour = grey(0.85)), 
+        panel.grid.minor = element_line(colour = grey(1)),
+        legend.key.size = unit(7, "mm"),
+       legend.text = element_text(size = 8),
+        legend.title = element_text(size = 9),
+        axis.line = element_line(size = 1, colour = "grey70"))  
+
+```
