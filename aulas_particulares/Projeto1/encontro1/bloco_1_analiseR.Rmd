@@ -210,7 +210,7 @@ load("~/Documents/TRABALHOS/git_projects/aulas_analisededados/aulas_particulares
 ## 1. **Visualizar Bancos de Dados**
 
 Para visualizar as informações contidas em uma base de dados podemos usar uma série de ferramentas no R. Dentre elas:
-```{r}
+```{r, eval=FALSE}
 # Retorna a estrutura do banco
 str(Latinobarometro_2015_Eng)  
 
@@ -263,104 +263,28 @@ colnames(database) <- c()
 
 ```
 
+
+```{r, echo=FALSE, results='hide',message=FALSE}
+# selecionar colunas no banco por nome
+database <- Latinobarometro_2015_Eng[,c("P32N", "P63NJ.G", "S23", "S12", "S6", "S24.K", "S18")]
+# renomear colunas
+colnames(database) <- c("P32N", "violencia_policial", "raca", "genero", "classe_social", "esgotamento", "escolaridade")
+```
+
+
 ## 2.**Manipulando Dados com Condicionais**
 
 As vezes você quer ir além de simplesmente selecionar uma coluna ou linha especifica. Você pode querer selecionar apenas os casos de acidentes em que houve vítima, os que envolveram ciclistas ou ainda os que envolveram moto ou caminhão e deixaram vítima. Para tal podemos trabalhar com operações lógicas utilizando as informações que aprendemos até agora. 
 
-```{r,message=FALSE}
+```{r}
 
 # as.factor() transforma um vector em factor (vetor com informacao categorica)
-acidentes_transito_2016$tipo <- as.factor(acidentes_transito_2016$tipo)
+database$violencia_policial <- as.factor(database$violencia_policial)
 
 # ver categorias na variavel
-levels(acidentes_transito_2016$tipo)
+levels(database$violencia_policial )
 
-# Selecionar acidentes de transito com vitimas
-acid_transit_vitima2016 <- acidentes_transito_2016[acidentes_transito_2016$tipo == "COM VÍTIMA",]
-
-# transformar variavel em numerica
-acidentes_transito_2016$ciclista <- as.numeric(acidentes_transito_2016$ciclista)
-
-# Selecionar acidentes de transito envolvendo ciclista
-acid_transit_ciclista2016 <- acidentes_transito_2016[acidentes_transito_2016$ciclista == 1,]
-
-# retirar casos faltantes (NAs) no banco
-acid_transit_ciclista2016 <- acid_transit_ciclista2016[complete.cases(acid_transit_ciclista2016),]
-
+# Selecionar casos com base no valor de uma variavel
+database <- database[database$genero == 1,]
 ```
-
-# **Introdução à Visualização de Dados**
-
-Apresentar dados de uma maneira informativa e de fácil compreensão é uma tarefa que está no cotidiano de cada analista de dados. O *R* é uma ótima ferramenta para produção de mapas, gráficos e tabelas, com diversos pacotes para isso. Escolheu-se o uso do pacote [ggplot2](http://ggplot2.tidyverse.org/reference/), por este ser o pacote com mais material de aprendizado e solução de dúvidas nos forúns de R e também pelos layout dos gráficos que podem ser produzidos.
-
-Para instalar o pacote ggplot no seu computador execute a seguinte função no R:
-```{r, eval=FALSE}
-
-# instala o pacote e suas dependencias
-install.packages("gpglot2", dependencies = T) 
-
-# apos instalado devemos carrega-lo
-library(ggplot2)
-```
-
-
-```{r, echo=FALSE, results='hide',message=FALSE}
-library(ggplot2) # carregar ggplot 
-```
-
-## Qual o número de acidentes envolvendo ciclistas em cada bairro do Recife?
-
-Na base de dados da CTTU temos as ocorrências de acidentes. No banco 'acid_transit_ciclista2016' estão as ocorrênicas de acidentes envolvendo ciclistas. Para responder à pergunta acima nós poderíamos ir contando o bairro de cada um dos 170 acidentes envolvendo ciclistas em 2016, mas no R nós podemos fazer isso de forma automática:
-
-```{r}
-# table() conta o numero de vezes que um determinado valor aparece em uma variavel
-table(acid_transit_ciclista2016$bairro)
-
-# podemos fazer um dataframe com essa informacao e armezena-lo
-bairro_acid_ciclista <- data.frame(table(acid_transit_ciclista2016$bairro))
-
-# ordenar o banco de dados com base nos acidentes
-bairro_acid_ciclista <- bairro_acid_ciclista[order(bairro_acid_ciclista$Freq, decreasing = TRUE),]
-
-# Selecionar apenas os 15 primeiros bairros com maior numero de acidentes
-bairro_acid_ciclista2 <- bairro_acid_ciclista[1:15, ]
-
-# visualizar banco manipulado
-bairro_acid_ciclista2
-
-# salvar banco de dados manipulado
-write.csv(bairro_acid_ciclista2, file = "bairros_+15_acidentes_ciclistas.csv")
-```
-
-</br>
-
-### Nosso primeiro gráfico!!
-
-```{r, ggplot}
-ggplot(data = bairro_acid_ciclista2,  # selecionar o banco de dados
-       aes(x = Var1, y = Freq) ) +    # selecionar variaveis do eixo x e y
-       geom_col()                     # selecionar tipo de gráfico a ser plotado
-```
-
-### Editando o gráfico
-
-Podemos melhorar nosso gráfico editando algumas coisas simples nele:
-```{r}
-
-# tranformar nomes em fatores ordenados 
-bairro_acid_ciclista2$Var1 <- factor(bairro_acid_ciclista2$Var1, bairro_acid_ciclista2$Var1[order(bairro_acid_ciclista2$Freq)])
-
-# grafico ggplot
-ggplot(data = bairro_acid_ciclista2,  aes(x = Var1, y = Freq ) ) +    
-       geom_col(fill = "black") +  # definir cor de preenchimento das barras
-       coord_flip()                # inverter eixos do grafico
-
-```
-
-
-
-
-
-
-
 

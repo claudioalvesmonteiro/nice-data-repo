@@ -349,7 +349,6 @@ ggplot(data = bairro_acid_ciclista2,  # selecionar o banco de dados
 
 Podemos melhorar nosso gráfico editando algumas coisas simples nele:
 ```{r}
-
 # tranformar nomes em fatores ordenados 
 bairro_acid_ciclista2$Var1 <- factor(bairro_acid_ciclista2$Var1, bairro_acid_ciclista2$Var1[order(bairro_acid_ciclista2$Freq)])
 
