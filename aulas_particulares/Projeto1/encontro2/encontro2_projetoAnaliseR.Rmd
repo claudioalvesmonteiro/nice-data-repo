@@ -48,7 +48,7 @@ colnames(database) <- c("participa_protestos","interesse_político", "violencia_
 
 ### Casos Faltantes
 
-Um dos problemas na análise de dados é a existência de casos faltantes (**missing cases**), sobretudo na execução de modelos estatísticos. Uma variável importante num banco de dados pode conter informações que em alguns casos não foram preenchidas e na retirada desses casos pode haver uma perda sistemática de informação. Para 
+Um dos problemas na análise de dados é a existência de casos faltantes (**missing cases**), sobretudo na execução de modelos estatísticos. Uma variável importante num banco de dados pode conter informações que em alguns casos não foram preenchidas e na retirada desses casos pode haver uma perda sistemática de informação. 
 
 ```{r, eval = F}
 # instalar e carregar pacote Amelia
@@ -59,7 +59,7 @@ library(Amelia)
 
 ```{r, echo = F}
 # carregar pacote Amelia
-library(Amelia)
+library(Amelia);library(dplyr)
 ```
 
 
@@ -149,11 +149,11 @@ ggplot(data = violenciaData,                # selecionar o banco de dados
 ### Gráfico de Frequência
 
 ```{r}
-# executar de anos de escolaridade
+# histograma p/ anos de escolaridade
 ggplot(data = databaseClean, aes(x = databaseClean$escolaridade))+
   geom_histogram()
 
-# executar densidade IDHM para Pernambuco
+# densidade p/ anos de escolaridade
 ggplot(data = databaseClean, aes(x = databaseClean$escolaridade))+
   geom_density()
 ```
