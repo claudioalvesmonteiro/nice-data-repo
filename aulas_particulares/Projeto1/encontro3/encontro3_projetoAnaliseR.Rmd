@@ -176,12 +176,13 @@ databaseClean$conversa_sobre_politicaOrd[databaseClean$conversa_sobre_politica =
 databaseClean$conversa_sobre_politicaOrd[databaseClean$conversa_sobre_politica == 4] <- 1
 
 databaseClean$conversa_sobre_politicaOrd <- factor(databaseClean$conversa_sobre_politicaOrd, 
-                                        levels = c("1", "2", "3", "4"), ordered = TRUE)
+                                        levels = c("1", "2", "3", "4"), 
+                                        labels = c('nunca','quase nunca','frequentemente', 'muita frequência'), ordered = TRUE)
 ```
 
 ## Executar Modelo CLM
 
-```{r}
+```{r, eval = F}
 #---------------------------------#
 # MODELO CLM
 #---------------------------------#
@@ -199,7 +200,7 @@ modelo1 <- clm(conversa_sobre_politicaOrd ~
                       data = databaseClean)
 ```
 
-```{r}
+```{r, eval = F}
 # visualizar resultados do modelo
 summary(modelo1)
 #stargazer(modelo1,  type = "text", title = "Resultados Modelo 1", style = "ajps", apply.coef = exp,  p.auto=FALSE)
