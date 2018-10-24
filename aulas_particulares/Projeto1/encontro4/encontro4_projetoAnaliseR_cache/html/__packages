@@ -1,0 +1,10 @@
+base
+knitr
+rmdformats
+Rcpp
+Amelia
+stargazer
+dplyr
+bindrcpp
+nnet
+ordinal

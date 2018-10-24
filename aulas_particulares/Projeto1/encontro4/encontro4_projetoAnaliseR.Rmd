@@ -60,7 +60,7 @@ Utilizamos o modelo de regressão logística binomial quando o fenômeno de inte
 ## Pacotes
 
 ```{r, eval=F}
-# pacote visulizacao de modelos
+# pacote visulizacao de modelos estatísticos
 install.packages('stargazer', dependencies = T)
 library(stargazer)
 ```
@@ -73,7 +73,6 @@ library(stargazer)
 
 ```{r}
 ## Recodificar VD 
-library(dplyr)
 databaseClean <- mutate(databaseClean, participa_protestoParticipou = ifelse(databaseClean$participa_protestos == 1, 1, 0))
 
 # Recodificar Violencia policial
@@ -111,8 +110,6 @@ summary(modelo1)
 
 # visualizar em log odds
 stargazer(modelo1, type = "text", title = "Resultados do Modelo", style = "ajps", apply.coef = exp, p.auto=FALSE)
-
-nagelkerke(fit = modelo1)
 ```
 # Modelo de Regressão Logística Multinomial (Multinomial Logit Regression)
 
@@ -126,7 +123,7 @@ Quando no fenômeno que desejamos explicar ou predizer assume valores nominais, 
 install.packages('nnet', dependencies = TRUE)
 ```
 
-```{r, eval =F}
+```{r}
 # carregar pacote
 library("nnet")
 ```
@@ -155,6 +152,9 @@ modelo1 <- multinom(interesse_politicoRecod ~
 
 # visualizar resultados
 summary(modelo1)
+
+# visualizar em log odds
+stargazer(modelo1, type = "text", title = "Resultados do Modelo", style = "ajps", apply.coef = exp, p.auto=FALSE)
 ```
 
 # Modelo de Regressão Ordinal (Cumulative Link Models)
@@ -187,12 +187,10 @@ databaseClean$conversa_sobre_politicaOrd <- factor(databaseClean$conversa_sobre_
 
 ## Executar Modelo CLM
 
-```{r, eval = F}
+```{r}
 #---------------------------------#
 # MODELO CLM
 #---------------------------------#
-
-head(databaseClean)
 
 # executar modelo
 modelo1 <- clm(conversa_sobre_politicaOrd ~ 
@@ -205,18 +203,15 @@ modelo1 <- clm(conversa_sobre_politicaOrd ~
                       data = databaseClean)
 ```
 
-```{r, eval = F}
+```{r}
 # visualizar resultados do modelo
 summary(modelo1)
-#stargazer(modelo1,  type = "text", title = "Resultados Modelo 1", style = "ajps", apply.coef = exp,  p.auto=FALSE)
 
-# Estatisticas de ajuste 
-#nagelkerke(fit = modelo1)
+# visualizar em odds ratio
+stargazer(modelo1,  type = "text", title = "Resultados Modelo 1", style = "ajps", apply.coef = exp,  p.auto=FALSE)
+
 ```
 
-
-
-####dados_modelo1.1000 <- sample_n(dados_modelo1, 1000)
 # Referências
 
 https://www.analyticsvidhya.com/blog/2016/02/multinomial-ordinal-logistic-regression/
