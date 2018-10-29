@@ -67,7 +67,7 @@ t.test(Pokemon$Total~Pokemon$Legendary)
 
 ## Amostras Emparelhadas
 
-Para executar o teste T para amostras emparelhadas vamos importar um banco de dados com os pesos de ratos antes e depois de se alimentarem com uma nova ração.
+Para executar o teste T para amostras emparelhadas vamos importar um banco de dados com os pesos de ratos antes e depois de se alimentarem com um cume novo.
 
 ```{r, echo=FALSE, results='hide',message=FALSE}
 meusRatos <- read_csv("/home/pacha/Documents/git_projects/aulas_analisededados/aulas_particulares/dados/ratosData.csv")
@@ -104,7 +104,7 @@ fit <- aov(Total ~ Type1, data=Pokemon)
 summary(fit)
 ```
 
-Podemos também executar o teste Tukey Honest Significant Differences para testar diferencas entre cada um dps grupos:
+Podemos também executar o teste Tukey Honest Significant Differences para testar diferencas entre cada um dos grupos:
 
 ```{r}
 # executar e visualizar o teste Tukey HSD

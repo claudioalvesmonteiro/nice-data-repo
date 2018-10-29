@@ -31,7 +31,7 @@ opts_knit$set(width=75)
 # Modelos Categóricos de Regressão 
 
 ```{r, echo=F}
-load("~/Documents/TRABALHOS/git_projects/aulas_analisededados/aulas_particulares/Projeto1/dados/Latinobarometro_2015_Eng.rdata")
+load("~/Documents/Consultorias/Analytique/Projetos/aulas_analisededados/aulas_particulares/Projeto1/dados/Latinobarometro_2015_Eng.rdata")
 ```
  
 ```{r, echo = F}
@@ -40,6 +40,9 @@ database <- Latinobarometro_2015_Eng[,c("P20TGB.A","P21ST.C","P32N", "P63NJ.G", 
 
 # renomear colunas
 colnames(database) <- c("conversa_sobre_politica","participa_protestos","interesse_político", "violencia_policial", "raca", "genero", "classe_social", "esgotamento", "escolaridade")
+
+# selecionar apenas Brasil
+# database <- database[database$PAIS == 'BRASIL',]
 ```
 
 ```{r, echo=F}

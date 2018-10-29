@@ -1,0 +1,167 @@
+---
+author: "Cláudio A. Monteiro"
+title: Capacitação Interna Analytique R
+output: 
+  ioslides_presentation:
+    css: shiny-slides.css
+    logo: images/shiny-logo.png
+    self_contained: no
+    incremental: true
+---
+
+# Aula 1: Introdução ao R
+
+## Veremos:
+
+- Conceitos básicos
+- Ambiente de desenvolvimento (RStudio)
+- Operações básicas
+- Tipos de dados
+- Carregando dados para o R
+
+
+## Introdução
+
+"O objetivo da educação não é aumentar a quantidade de conhecimento, mas sim criar as possibilidades para inventar e descobrir, é criar pessoas capazes de fazer o novo."
+
+-- Jean Piaget
+
+## Introdução
+
+- Linguagem de Programação (Estatística)
+- **O pote**
+- Linguagem S
+- Robert Gentleman e Ross Ihaka, Nova Zelândia
+
+## Porquê e pra quê?
+
+- Automatização de processos
+- Transparência e replicabilidade (Pra tu mermão!)
+- Todo tipo de análise
+- Crème de la crème
+
+## Mão na massa!
+
+###### A partir de agora iremos começar a trabalhar diretamente com a linguagem R, compreendendo seus conceitos e operações mais básicas. Vamos abrir o RStudio.
+
+## Mão na massa!
+
+###### **Atenção!** Abra um *Script* e salve-o com o nome que desejar, numa pasta específica para seus estudos em R. É muito importante que você acompanhe o texto com o RStudio aberto, inserindo e executando os códigos no Script. Para tal você deve estar com a barra "|" piscando na mesma linha do código que quer executar, então tecle *Ctrl + Enter (Windows/Linux)* ou *Command + Enter (MAC)*.
+
+## Mão na massa!
+
+###### A funcionalidade mais básica do R é atuar como uma calculadora. Podemos fazer alguns cálculos básicos como:
+
+</br>
+
+```{r, results=FALSE}
+3 + 5               # soma
+183082 - 21982      # subtracao
+92 * 1.6            # multiplicacao
+900 / 30            # divisao
+40**2               # exponencial
+```
+
+
+## Função
+
+###### Uma *Função* é um *comando* que irá executar uma série de tarefas que lhe foi designada. Tudo o que *acontece* no R é uma Função. A Função sqrt() , por exemplo, nos retorna a raiz quadrada do que estiver entre parênteses:
+
+</br>
+
+```{r}
+sqrt(9)
+```
+
+## Função
+
+###### **Atenção!** Toda função no R precisa ter uma documentação do que ela faz, como ela é estruturada e o que cada argumento da função significa. Para solicitar esse documento basta executar o seguinte comando:
+
+</br>
+
+```{r, eval=FALSE}
+help(sqrt)
+```
+
+## Objeto
+
+###### No R, tudo aquilo que **existe** é um objeto. 
+
+###### Objetos do mundo real têm duas caracteristicas: todos tem *estado* e *comportamento*. Gatos possuem estado (nome, cor, cheiro, fome) e comportamento (miar, pular, ronronar). Identificar o estado e comportamento de objetos do mundo real é uma ótima maneira de começar a pensar em termos de programaço orientada a objetos.
+
+## Objeto
+
+###### Para ilustrar isso, vamos criar objetos! 
+
+</br>
+
+```{r}
+
+# '<' e  '-'  , juntos : '<-'
+
+objeto1 <- 20
+
+objeto1
+```
+
+## Objeto
+
+**Atenção!** Podemos ver nos códigos que os comentários estão precedidos de cerquilha (#). Tudo o que estiver à sua direta será lido pelo R como um comentário e não será executado. 
+
+</br>
+
+**Atenção!** Devemos nos atentar para criar objetos que sejam concisos em seu nome, identificando bem o que eles representam. Evita-se também o uso de acentos, tantos nos códigos como em comentários.
+
+## Tipos de objetos
+
+#### Logical (lógico) e Vetores
+
+</br>
+
+```{r}
+# funcao c() significa concatenate, combina os valores TRUE e FALSE e atribui a x1
+x1 <- c(TRUE, FALSE)  
+x1
+class(x1) 
+```
+
+## Tipos de objetos
+
+#### Integer (quantitativa discreta)
+
+</br>
+
+```{r}
+# dois pontos (:) cria um vetor de numeros inteiros
+x2 <- 1:10
+x2
+class(x2)
+```
+
+## Tipos de objetos
+
+#### Character (qualitativa nominal)
+
+</br>
+
+```{r}
+nome <- c("Fulano", "Sicrano", "Beltrano") 
+nome
+class(nome)
+```
+
+###### **Atenção!** Como podemos observar, para criar objetos do tipo character, devemos colocar as informaões entre aspas.
+
+## Tipos de objetos
+
+#### Numeric (quantitativa continua)
+
+</br>
+
+```{r}
+altura <- c( 1.72, 1.58, 2.01) 
+altura
+class(altura)
+
+```
+
