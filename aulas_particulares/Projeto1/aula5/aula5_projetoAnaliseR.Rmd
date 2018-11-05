@@ -30,6 +30,21 @@ opts_knit$set(width=75)
 
 Nessa aula veremos algumas ferramentas que R dispõe para produção de representações gráficas de informações. Vamos explorar (1) **Opções de edição no ggplot2**; (2) **Visualização Espacial**; e (3) **Visualização de Textos**. Essas visualizações são úteis para diversos conhecimentos e proporcionam um diferencial na atuação profissional, acadêmica ou pessoal. O intuito principal aqui é comunicar informação de forma **eficiente**, de modo que qualquer pessoa compreenda facilmente a mensagem que a imagem quer passar; e **agradável**, para que facilite a transmissão e recepção da mensagem.
 
+
+Para visualizar a distribuição das informações vamos utilizar a base de dados do [AtlasBrasil](http://www.atlasbrasil.org.br/2013/pt/)
+
+```{r, eval=F}
+# carregar dados
+library(readxl)
+AtlasBrasil <- read_excel("dados/AtlasBrasil_Consulta.xlsx")
+```
+
+```{r, echo = F}
+library(readxl)
+AtlasBrasil <- read_excel("/home/pacha/Documents/Consultorias/Analytique/Projetos/aulas_analisededados/aulas_particulares/Projeto1/dados/AtlasBrasil_Consulta.xlsx")
+```
+
+
 # Opções de Edição no `ggplot2`
 
 ```{r}
@@ -44,11 +59,11 @@ theme_minimal
 tema_massa <- function(base_size = 12, base_family = "") {
   theme_minimal(base_size = base_size, base_family = base_family) %+replace% 
     theme(axis.ticks = element_line(size = 1, colour = "grey70" ),
-          axis.text.x = element_text(colour= "black",size=8,hjust=.5,vjust=.5,face="plain"),
-          axis.text.y = element_text(colour="black",size=8,angle=0,hjust=1,vjust=0,face="plain"), 
-          axis.title.x = element_text(colour="black",size=9,angle=0,hjust=.5,vjust=0,face="plain"),
+          axis.text.x = element_text(colour= "black",size=10,hjust=.5,vjust=.5,face="plain"),
+          axis.text.y = element_text(colour="black",size=10,angle=0,hjust=1,vjust=0,face="plain"), 
+          axis.title.x = element_text(colour="black",size=11,angle=0,hjust=.5,vjust=0,face="plain"),
           axis.title.y = element_text(colour="black",size=11,angle=90,hjust=.5,vjust=0.5,face="plain"),
-          title = element_text(colour="black",size=9,angle=0,hjust=.5,vjust=.5,face="plain"),
+          title = element_text(colour="black",size=12,angle=0,hjust=.5,vjust=.5,face="plain"),
           panel.grid.major = element_line(colour = grey(0.85)), 
           panel.grid.minor = element_line(colour = grey(1)),
           legend.key.size = unit(9, "mm"),
@@ -57,33 +72,40 @@ tema_massa <- function(base_size = 12, base_family = "") {
           axis.line = element_line(size = 1, colour = "grey70"))
 }
 
-# grafico com tema editado
-ggplot(data = melted_cormat, aes(x=Var1, y=Var2, fill=value)) + 
-  geom_tile()+
-  tema_massa()
-
-# editar grafico diretamente no codigo
-ggplot(data = melted_cormat, aes(x=Var1, y=Var2) )+ 
-  geom_tile(aes( fill=value))+
-  labs(x = "", y = "")+
-  guides(fill=guide_legend(title="Correlação de Pearson"))+
-  tema_massa()%+replace% 
-  theme(axis.text.x = element_text(size=10, angle = 50, hjust=1,vjust=.9,face="plain")) 
-
-# carregar pacotes 
-library(ggrepel)
-
-# agregar valores por ano
-dataAno <- aggregate(multas_receita$receita_repassada_ao_detran, by = list(ano = multas_receita$ano), sum)
-
-# grafico 
-ggplot(data = dataAno, aes(x = ano, y = x, group = 1)) +
-  geom_line(color = "#003152", size = 1.3) +
-  geom_label_repel(data = dataAno, aes(x = ano, y = x, label = dataAno$x), size= 3.2)+
-  labs(y= "Receita Bruta Repassada ao DETRAN")+
-  tema_massa()
 
 ```
+
+```{r}
+# grafico scatter plot simples
+ggplot(data = AtlasBrasil, aes(x =`Índice de Gini 2010`, 
+                               y = AtlasBrasil$`Taxa de analfabetismo - 11 a 14 anos 2010`, 
+                               group = 1)) +
+  geom_point()
+```
+
+```{r}
+# grafico scatter plot editado
+ggplot(data = AtlasBrasil, aes(x =`Índice de Gini 2010`, y = AtlasBrasil$`Taxa de analfabetismo - 11 a 14 anos 2010`, group = 1)) +
+  geom_point(color = "#003152", size = 1.3) +
+  geom_smooth(method="lm", color = "black")+
+  labs(Title = "Relação Entre Desigualdade e Analfabetismo", 
+       y = "Índice de GINI",
+       x = "Taxa de Analfabetismo")+
+  theme_minimal()
+```
+
+```{r}
+# grafico scatter plot com edicao personalizada
+ggplot(data = AtlasBrasil, aes(x =`Índice de Gini 2010`, y = AtlasBrasil$`Taxa de analfabetismo - 11 a 14 anos 2010`, group = 1)) +
+  geom_point(color = "#003152", size = 1.3) +
+  geom_smooth(method="lm", color = "black")+
+  labs(Title = "Relação Entre Desigualdade e Analfabetismo", 
+       y = "Índice de GINI",
+       x = "Taxa de Analfabetismo")+
+  tema_massa()
+```
+
+
 # Análise Espacial em R
 
 ## Introdução
@@ -98,15 +120,23 @@ Hoje vamos utilizar o formato **.SHP**, também chamado de **shapefile**. Acesse
 
 Para importar o arquivo instale o pacote "raster", bem como suas dependências. Neste pacote há a função *shapefile()*, que funciona como a *read.csv()*, mas para arquivos do tipo **.SHP**.
 
-```{r}
+```{r, eval=F}
 # carregar pacote
 library(raster)
 
 # carregar arquivo
-shp_brasil_estados <- shapefile("dados/estados_2010.shp")
+shp_brasil_estados <- shapefile("dados/Geodata/estados_2010.shp")
 ```
 
-## Visualização do Shapefile
+```{r, echo=F}
+library(raster)
+shp_brasil_estados <- shapefile("/home/pacha/Documents/Consultorias/Analytique/Projetos/aulas_analisededados/aulas_particulares/Projeto1/dados/Geodata/estados_2010.shp")
+```
+
+## Visualização do Shape
+
+Para produzir um gráfico espacial do tipo ggplot precisamos converter o objeto que importamos como um `SpatialPolygonsDataFrame`, uma base de dados com informações georreferenciais, para um tipo de dados `dataframe`.
+
 ```{r}
 # carregar pacote de visualizacao
 library(ggplot2)
@@ -119,12 +149,47 @@ ggplot(data = shp_brasil_estados@data, aes(map_id = shp_brasil_estados@data$nome
   geom_map(colour = grey(0.85),  map = data_fortity) +
   expand_limits(x = data_fortity$long, y = data_fortity$lat) +
   coord_fixed(1) 
-
 ```
 
+## Combinar uma base shapefile com um dataframe em R
 
+```{r}
+# carregar pacote para manipulacao de dados
+library(plyr)
 
+# salvar informacoes da base espacial no objeto dataframe para posterior combinacao
+shp_brasil_estados@data$id <- rownames(shp_brasil_estados@data)
+shp_brasil_estados.df <- fortify(shp_brasil_estados)
+shp_brasil_estados.df <- join(shp_brasil_estados.df, shp_brasil_estados@data, by="id")
 
+# combinar duas bases
+AtlasBrasil$codigo_ibg <- as.character(AtlasBrasil$Código)
+shp_brasil_estados.df <- merge(shp_brasil_estados.df, AtlasBrasil, by = "codigo_ibg")
 
+# mapa 1
+ggplot(data = shp_brasil_estados.df, aes(x = long, y = lat, group = group)) + 
+      geom_polygon(aes(group = group, fill = `IDHM 2010`))+  # desenhar poligonos
+      geom_path(color="grey")+                               # desenhar fronteiras
+      labs(title = "Distribuição do IDHM por Estado")+
+      coord_equal() 
+
+# mapa 2
+ggplot(data = shp_brasil_estados.df, aes(x = long, y = lat, group = group)) + 
+      geom_polygon(aes(group = group, fill = `IDHM 2010`))+ # desenhar poligonos
+      geom_path(color=NA)+                                  # desenhar fronteiras
+      labs(title = "Distribuição do IDHM por Estado")+
+      coord_equal() +
+      theme_minimal()
+
+# mapa 3 
+library(viridis)
+ggplot(data = shp_brasil_estados.df, aes(x = long, y = lat, group = group)) + 
+      geom_polygon(aes(group = group, fill = `IDHM 2010`))+ # desenhar poligonos
+      geom_path(color=NA)+                                  # desenhar fronteiras
+      labs(title = "Distribuição do IDHM por Estado")+
+      coord_equal() +
+      scale_fill_viridis()+
+      theme_minimal()
+```
 
 

@@ -1,8 +1,10 @@
 ---
 title: "Análise de Dados em R - Bloco 5"
-author: "Cláudio A. Monteiro"
-date: "August 3, 2018"
-output: html_document
+author: Cláudio A. Monteiro
+date: Novembro, 2018
+output:
+   rmdformats::readthedown:
+    highlight: kate
 ---
 
 ```{r setup, include=FALSE}
@@ -47,3 +49,5 @@ ggplot(data = shp_brasil_estados@data, aes(map_id = shp_brasil_estados@data$nome
   coord_fixed(1) 
 
 ```
+
+# 

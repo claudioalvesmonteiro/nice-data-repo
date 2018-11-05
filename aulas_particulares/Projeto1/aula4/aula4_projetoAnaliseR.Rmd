@@ -59,9 +59,13 @@ Utilizamos o modelo de regressão logística binomial quando o fenômeno de inte
 ```{r, echo=F}
 # carregar pacote de visualizacao de modelos estatisticos
 library(stargazer)
+
+# pacote manipulacao de dados
+library(dplyr)
 ```
 
 ```{r, echo = F}
+
 ## Recodificar VD 
 databaseClean <- mutate(databaseClean, participa_protestoParticipou = ifelse(databaseClean$participa_protestos == 1, 1, 0))
 

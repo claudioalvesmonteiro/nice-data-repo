@@ -1,0 +1,10 @@
+base
+knitr
+rmdformats
+sp
+raster
+ggplot2
+readxl
+plyr
+viridisLite
+viridis
