@@ -17,8 +17,6 @@ output:
 - Ambiente de desenvolvimento (RStudio)
 - Operações básicas
 - Tipos de dados
-- Carregando dados para o R
-
 
 ## Introdução
 
@@ -164,4 +162,61 @@ altura
 class(altura)
 
 ```
+
+## Tipos de objetos
+
+#### Data Frame (banco de dados)
+
+</br>
+
+```{r}
+dados_altura <- data.frame(nome, altura)
+dados_altura
+class(dados_altura)
+```
+
+## Diretório de Trabalho
+
+###### O R trabalha com uma pasta especifica em seu computador, importando e salvando arquivos nesta pasta, chamada de *diretório de trabalho* (*Working Directory*). A Função getwd() informa qual o diretório atual em que se está trabalhando:
+
+</br>
+
+```{r, results=FALSE}
+getwd()
+```
+
+## Diretório de Trabalho
+
+###### Crie uma pasta de trabalho para os estudos em R em seu computador e use a Função `setwd()` para defini-la como seu diretório de trabalho. Clique com o botão direito do seu mouse nesta pasta, selecione propriedades, copie o caminho computacional daquela pasta, cole no lugar do exemplo entre aspas (certifique-se de que as barras estão viradas para o lado direito). Por fim, Função `list.files()` lista todos os arquivos presentes no seu diretório.
+
+##  Leitura/Importação de arquivos
+
+
+| **Formato do Arquivo**      | **Função**                   | **Pacote** |
+| --------------------------- |:---------------------------: | :--------: |
+| .csv                        | read.csv()                   | base       |
+| .rdata                      | load()                       | base       |
+| .xls e .xlsx (Excel)        | read_excel()                 | readxl     |
+| .sav (SPSS)                 | read_sav()                   | haven      |
+| .dat (STATA)                | read_stata()                 | haven      |
+| .sas7bdat (SAS)             | read_sas()                   | haven      |
+
+## Salvando um banco de dados
+
+##### O formato mais universal para salvar um arquivo dataframe em forma de tabela é `.csv`. Salvamos com um separador em ';' para ele ser legível ao EXCEL e desativamos o padrão de salvar com os nomes das linhas (geralmente desnecessario).
+
+</br> 
+
+```{r}
+write.table(dados_altura, 
+            'dados_altura.csv', 
+            sep = ';', 
+            row.names = FALSE)
+```
+
+## Exercício
+
+- Entre no portal [Dados Abertos Recife](http://dados.recife.pe.gov.br/dataset/acidentes-de-transito-com-e-sem-vitimas) e baixe a base da CTTU para os acidentes de trânsito em Recife, no ano 2016;
+- Mova o banco para sua pasta de trabalho;
+- Carregue o banco no R.
 

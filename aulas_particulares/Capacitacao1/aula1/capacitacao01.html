@@ -123,7 +123,6 @@
 <li>Ambiente de desenvolvimento (RStudio)</li>
 <li>Operações básicas</li>
 <li>Tipos de dados</li>
-<li>Carregando dados para o R</li>
 </ul>
 
 </article></slide><slide class=""><hgroup><h2>Introdução</h2></hgroup><article  id="introducao">
@@ -278,7 +277,96 @@ altura</pre>
 
 <pre class = 'prettyprint lang-r'>class(altura)</pre>
 
-<pre >## [1] &quot;numeric&quot;</pre></article></slide>
+<pre >## [1] &quot;numeric&quot;</pre>
+
+</article></slide><slide class=""><hgroup><h2>Tipos de objetos</h2></hgroup><article  id="tipos-de-objetos-4">
+
+<h4>Data Frame (banco de dados)</h4>
+
+<p></br></p>
+
+<pre class = 'prettyprint lang-r'>dados_altura &lt;- data.frame(nome, altura)
+dados_altura</pre>
+
+<pre >##       nome altura
+## 1   Fulano   1.72
+## 2  Sicrano   1.58
+## 3 Beltrano   2.01</pre>
+
+<pre class = 'prettyprint lang-r'>class(dados_altura)</pre>
+
+<pre >## [1] &quot;data.frame&quot;</pre>
+
+</article></slide><slide class=""><hgroup><h2>Diretório de Trabalho</h2></hgroup><article  id="diretorio-de-trabalho">
+
+<h6>O R trabalha com uma pasta especifica em seu computador, importando e salvando arquivos nesta pasta, chamada de <em>diretório de trabalho</em> (<em>Working Directory</em>). A Função getwd() informa qual o diretório atual em que se está trabalhando:</h6>
+
+<p></br></p>
+
+<pre class = 'prettyprint lang-r'>getwd()</pre>
+
+</article></slide><slide class=""><hgroup><h2>Diretório de Trabalho</h2></hgroup><article  id="diretorio-de-trabalho-1">
+
+<h6>Crie uma pasta de trabalho para os estudos em R em seu computador e use a Função <code>setwd()</code> para defini-la como seu diretório de trabalho. Clique com o botão direito do seu mouse nesta pasta, selecione propriedades, copie o caminho computacional daquela pasta, cole no lugar do exemplo entre aspas (certifique-se de que as barras estão viradas para o lado direito). Por fim, Função <code>list.files()</code> lista todos os arquivos presentes no seu diretório.</h6>
+
+</article></slide><slide class=""><hgroup><h2>Leitura/Importação de arquivos</h2></hgroup><article  id="leituraimportacao-de-arquivos">
+
+<table class = 'rmdtable'>
+<tr class="header">
+<th align="left"><strong>Formato do Arquivo</strong></th>
+<th align="center"><strong>Função</strong></th>
+<th align="center"><strong>Pacote</strong></th>
+</tr>
+<tr class="odd">
+<td align="left">.csv</td>
+<td align="center">read.csv()</td>
+<td align="center">base</td>
+</tr>
+<tr class="even">
+<td align="left">.rdata</td>
+<td align="center">load()</td>
+<td align="center">base</td>
+</tr>
+<tr class="odd">
+<td align="left">.xls e .xlsx (Excel)</td>
+<td align="center">read_excel()</td>
+<td align="center">readxl</td>
+</tr>
+<tr class="even">
+<td align="left">.sav (SPSS)</td>
+<td align="center">read_sav()</td>
+<td align="center">haven</td>
+</tr>
+<tr class="odd">
+<td align="left">.dat (STATA)</td>
+<td align="center">read_stata()</td>
+<td align="center">haven</td>
+</tr>
+<tr class="even">
+<td align="left">.sas7bdat (SAS)</td>
+<td align="center">read_sas()</td>
+<td align="center">haven</td>
+</tr>
+</table>
+
+</article></slide><slide class=""><hgroup><h2>Salvando um banco de dados</h2></hgroup><article  id="salvando-um-banco-de-dados">
+
+<h5>O formato mais universal para salvar um arquivo dataframe em forma de tabela é <code>.csv</code>. Salvamos com um separador em &#39;;&#39; para ele ser legível ao EXCEL e desativamos o padrão de salvar com os nomes das linhas (geralmente desnecessario).</h5>
+
+<p></br></p>
+
+<pre class = 'prettyprint lang-r'>write.table(dados_altura, 
+            &#39;dados_altura.csv&#39;, 
+            sep = &#39;;&#39;, 
+            row.names = FALSE)</pre>
+
+</article></slide><slide class=""><hgroup><h2>Exercício</h2></hgroup><article  id="exercicio">
+
+<ul class = 'build'>
+<li>Entre no portal <a href='http://dados.recife.pe.gov.br/dataset/acidentes-de-transito-com-e-sem-vitimas' title=''>Dados Abertos Recife</a> e baixe a base da CTTU para os acidentes de trânsito em Recife, no ano 2016;</li>
+<li>Mova o banco para sua pasta de trabalho;</li>
+<li>Carregue o banco no R.</li>
+</ul></article></slide>
 
 
   <slide class="backdrop"></slide>

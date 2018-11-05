@@ -1,0 +1,162 @@
+---
+title: Projeto de Análise de Dados em R - Bloco 2
+author: Cláudio A. Monteiro
+date: Outubro, 2018
+output:
+   rmdformats::readthedown:
+    highlight: kate
+---
+<style>
+body {
+text-align: justify}
+</style>
+
+```{r knitr_init, include=FALSE}
+library(knitr); library(rmdformats)
+
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=TRUE,
+	             cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE)
+opts_knit$set(width=75)
+```
+
+</br>
+
+Neste bloco vamos trabalhar diretamente com a base de dados, tratando os dados para análise e explorando as distribuições com estatística descritiva e gráficos. Primeiro importe a base de dados para o ambiente.
+
+
+```{r, echo=F}
+load("~/Documents/TRABALHOS/git_projects/aulas_analisededados/aulas_particulares/Projeto1/dados/Latinobarometro_2015_Eng.rdata")
+```
+ 
+# Tratamento de Dados
+
+### Seleção
+```{r}
+# selecionar colunas no banco por nome
+database <- Latinobarometro_2015_Eng[,c("P21ST.C","P32N", "P63NJ.G", "S23", "S12", "S6", "S24.K", "S18")]
+
+# renomear colunas
+colnames(database) <- c("participa_protestos","interesse_político", "violencia_policial", "raca", "genero", "classe_social", "esgotamento", "escolaridade")
+```
+
+### Casos Faltantes
+
+Um dos problemas na análise de dados é a existência de casos faltantes (**missing cases**), sobretudo na execução de modelos estatísticos. Uma variável importante num banco de dados pode conter informações que em alguns casos não foram preenchidas e na retirada desses casos pode haver uma perda sistemática de informação. 
+
+```{r, eval = F}
+# instalar e carregar pacote Amelia
+install.packages('Amelia')
+library(Amelia)
+```
+
+
+```{r, echo = F}
+# carregar pacote Amelia
+library(Amelia);library(dplyr)
+```
+
+
+```{r}
+# visualizar casos faltantes no banco
+missmap(database)
+
+# contabilizar
+is.na(database)
+sum(is.na(database))
+
+# porcentagem de faltantes do total
+sum(is.na(database)) / dim(database)[1] 
+
+# selecionar casos completos
+databaseClean <- database[complete.cases(database),] 
+```
+
+# Estatística Descritiva
+
+A estatística descritiva é uma ferramenta para identificar a distribuição dos dados e por muitas vezes já traz informações utéis e que auxiliam na análise. Vamos desenvolver os comandos para frequência, mínimo, máximo, média, mediana, desvio-padrão, entre outros. 
+
+```{r}
+# frequencia de contagem (variaveis nominais e categoricas)
+table(database$participa_protestos)
+table(database$interesse_político)
+```
+
+```{r, eval = F}
+# instalar e carregar pacote dplyr
+install.packages('dplyr')
+library(dplyr)
+```
+
+```{r}
+# construir um data.frame e transformar em porcentagem
+violenciaData <- data.frame(table(database$violencia_policial))
+violenciaData <- mutate(violenciaData, porcentagem = ( Freq/sum(Freq))*100  )
+violenciaData$porcentagem <- round(violenciaData$porcentagem,2) 
+```
+
+```{r}
+# minimo, primeiro quartil, mediana, terceiro quartil, maximo (VARIAVEIS NUMERICAS)
+summary(databaseClean$escolaridade)
+
+# desvio-padrao (nos indica o grau de dispersao dos casos em relacao a media)
+# 1 desvio-padrao +ou- = 68.26%
+# 2 desvio-padrao +ou- = 95.44%
+# 3 desvio-padrao +ou- = 99.72%
+
+sd(databaseClean$escolaridade) 
+
+```
+
+# Visualização de Dados
+
+Apresentar dados de uma maneira informativa e de fácil compreensão é uma tarefa que está no cotidiano de cada analista de dados. O *R* é uma ótima ferramenta para produção de mapas, gráficos e tabelas, com diversos pacotes para isso. Escolheu-se o uso do pacote [ggplot2](http://ggplot2.tidyverse.org/reference/), por este ser o pacote com mais material de aprendizado e solução de dúvidas nos forúns de R e também pelos layout dos gráficos que podem ser produzidos.
+
+Para instalar o pacote ggplot no seu computador execute a seguinte função no R:
+```{r, eval=FALSE}
+# instalar e carregar o pacote e suas dependencias
+install.packages("gpglot2", dependencies = T) 
+
+# apos instalado devemos carrega-lo
+library(ggplot2)
+```
+
+
+```{r, echo=FALSE, results='hide',message=FALSE}
+library(ggplot2) # carregar ggplot 
+```
+
+### Gráfico de Barra
+
+```{r}
+# criar fator com rotulos VER NO CODEBOOK QUAL OS ROTULOS
+violenciaData$Nomes <- ''
+violenciaData$Nomes <- factor(violenciaData$Var1, levels = c('1', '2', '3', '4', '5'),
+labels = c("pouco", "menos", "medio", "mais", "muito")) 
+
+# executar grafico
+ggplot(data = violenciaData,                # selecionar o banco de dados
+       aes(x = Nomes, y = porcentagem) ) +   # selecionar variaveis do eixo x e y
+       geom_col()                           # selecionar tipo de gráfico a ser plotado
+```
+
+### Gráfico de Frequência
+
+```{r}
+# histograma p/ anos de escolaridade
+ggplot(data = databaseClean, aes(x = databaseClean$escolaridade))+
+  geom_histogram()
+
+# densidade p/ anos de escolaridade
+ggplot(data = databaseClean, aes(x = databaseClean$escolaridade))+
+  geom_density()
+```
+
+
+

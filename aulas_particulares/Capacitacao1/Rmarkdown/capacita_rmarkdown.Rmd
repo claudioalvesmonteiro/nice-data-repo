@@ -1,0 +1,59 @@
+---
+title: "Introdução ao R Markdown"
+date: "`r Sys.Date()`"
+output:
+  rmdformats::readthedown:
+    highlight: kate
+---
+
+
+```{r knitr_init, echo=FALSE, cache=FALSE}
+library(knitr)
+library(rmdformats)
+
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=FALSE,
+	             cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE)
+opts_knit$set(width=75)
+```
+
+# Titulo 1
+
+## Titulo 2
+
+### Titulo 3
+
+#### Titulo 4
+
+texto texto texto texto texto texto texto texto muito texto texto texto texto texto texto texto texto texto texto texto
+
+</br>
+
+#### Link:
+
+[Dados Abertos Recife](http://dados.recife.pe.gov.br/dataset/acidentes-de-transito-com-e-sem-vitimas).
+
+#### Imagem
+
+![](ovelha.png)
+# Código R
+
+Um "chunk" é um bloco de códigos em R, no qual o Rmarkdown os reconhece e executa para gerar resultados:
+
+```{r}
+nome <- c("Fulano", "Sicrano", "Beltrano") 
+nome
+class(nome)
+```
+
+Dentro de um **chunk**, é possível ter diversos argumentos para controlar o que será mostrado no documento e o que será executado:
+
+`eval = FALSE` - Não executa o código
+
+

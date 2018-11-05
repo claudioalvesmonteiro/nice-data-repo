@@ -1,0 +1,223 @@
+---
+title: Projeto de Análise de Dados em R - Bloco 2
+author: Cláudio A. Monteiro
+date: Outubro, 2018
+output:
+   rmdformats::readthedown:
+    highlight: kate
+---
+<style>
+body {
+text-align: justify}
+</style>
+
+```{r knitr_init, include=FALSE}
+library(knitr); library(rmdformats)
+
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=TRUE,
+	             cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE)
+opts_knit$set(width=75)
+```
+
+</br>
+
+
+
+```{r, echo=F}
+load("~/Documents/TRABALHOS/git_projects/aulas_analisededados/aulas_particulares/Projeto1/dados/Latinobarometro_2015_Eng.rdata")
+```
+ 
+# Pré-processamento de Dados (data handling)
+
+```{r}
+# selecionar colunas no banco por nome
+database <- Latinobarometro_2015_Eng[,c("P20TGB.A","P21ST.C","P32N", "P63NJ.G", "S23", "S12", "S6", "S24.K", "S18")]
+
+# renomear colunas
+colnames(database) <- c("conversa_sobre_politica","participa_protestos","interesse_político", "violencia_policial", "raca", "genero", "classe_social", "esgotamento", "escolaridade")
+```
+
+```{r}
+# visualizar casos faltantes no banco
+library(Amelia)
+missmap(database)
+
+# selecionar casos completos
+databaseClean <- database[complete.cases(database),] 
+```
+
+# Modelo de Regressão Logística Binomial (Binomial Logit Regression)
+
+Utilizamos o modelo de regressão logística binomial quando o fenômeno de interesse assume duas categorias (0 e 1). Estima-se os efeitos das variáveis independentes sobre a chance da manifestação do fenômeno (1) em relação ao valor 0. Por exemplo, no nosso primeiro modelo vamos estimar o efeito da percepção da `violencia policial` (presença de violência policial quase todos os dias) sobre a chance de `já ter participado de protestos` (1), em relação a `poderia participar` + `nunca participaria` (0).
+
+## Pacotes
+
+```{r, eval=F}
+# pacote visulizacao de modelos
+install.packages('stargazer', dependencies = T)
+library(stargazer)
+```
+
+```{r, echo=F}
+library(stargazer)
+```
+
+## Recodificar Variáveis
+
+```{r}
+## Recodificar VD 
+library(dplyr)
+databaseClean <- mutate(databaseClean, participa_protestoParticipou = ifelse(databaseClean$participa_protestos == 1, 1, 0))
+
+# Recodificar Violencia policial
+databaseClean <- mutate(databaseClean, violenciaPolicialOrd = 0)
+databaseClean$violenciaPolicialOrd[databaseClean$violencia_policial == 5] <- 0
+databaseClean$violenciaPolicialOrd[databaseClean$violencia_policial == 4] <- 1
+databaseClean$violenciaPolicialOrd[databaseClean$violencia_policial == 3] <- 2
+databaseClean$violenciaPolicialOrd[databaseClean$violencia_policial == 2] <- 3
+databaseClean$violenciaPolicialOrd[databaseClean$violencia_policial == 1] <- 4
+
+databaseClean <- mutate(databaseClean, violenciaPolicialTodosDias = ifelse(databaseClean$violencia_policial == 1, 1, 0))
+
+# Recodificar VIs categoricas
+databaseClean <- mutate(databaseClean, esgotamentoSim = ifelse(esgotamento == 1, 1, 0)) 
+databaseClean <- mutate(databaseClean, classeBaixa = ifelse(classe_social == 5, 1, 0)) 
+databaseClean <- mutate(databaseClean, generoMulher = ifelse(genero == 2, 1, 0)) 
+databaseClean <- mutate(databaseClean, racaNegroMulato = ifelse(raca == 2 | raca == 5, 1, 0)) 
+```
+
+## Executar Modelo GLM Binomial
+
+```{r}
+# executar modelo
+modelo1 <- glm(participa_protestoParticipou ~ 
+                    violenciaPolicialTodosDias + 
+                      esgotamentoSim +
+                      escolaridade + 
+                      classeBaixa + 
+                      generoMulher + 
+                      racaNegroMulato, 
+                      data = databaseClean, family = 'binomial')
+
+# visualizar resultados
+summary(modelo1)
+
+# visualizar em log odds
+stargazer(modelo1, type = "text", title = "Resultados do Modelo", style = "ajps", apply.coef = exp, p.auto=FALSE)
+
+nagelkerke(fit = modelo1)
+```
+# Modelo de Regressão Logística Multinomial (Multinomial Logit Regression)
+
+Quando no fenômeno que desejamos explicar ou predizer assume valores nominais, podemos usar uma regressão logística multinomial. Tomando uma das categorias como base de referência para comparar com as demais, estimamos os efeitos das variáveis independentes sobre a chance da manifestação de cada fenômeno (categoria) em relação a categoria base. Por exemplo, no nosso primeiro modelo vamos estimar o efeito da percepção da `violencia policial` (presença de violência policial quase todos os dias) sobre a chance de `não votar nem protestar`, em relação a `votar e também protestar`.
+
+
+## Pacotes
+
+```{r, eval =F}
+# instalar pacote
+install.packages('nnet', dependencies = TRUE)
+```
+
+```{r, eval =F}
+# carregar pacote
+library("nnet")
+```
+
+## Recodificar variaveis
+
+```{r}
+# recodificar VD
+databaseClean$interesse_politicoRecod <- factor(databaseClean$interesse_político, levels = c(1, 2, 3, 4, 5), labels = c('votar sempre','votar e também protestar','só protestar e não serve votar','não votar e nem protestar','nao sei'))
+
+# Definir a categoria de parametro para comparacao
+databaseClean$interesse_politicoRecod <- relevel(databaseClean$interesse_politicoRecod, ref = "votar e também protestar")
+```
+
+## Executar Modelo Multinomial
+
+```{r}
+modelo1 <- multinom(interesse_politicoRecod ~ 
+                    violenciaPolicialTodosDias + 
+                      esgotamentoSim +
+                      escolaridade + 
+                      classeBaixa + 
+                      generoMulher + 
+                      racaNegroMulato, 
+                      data = databaseClean)
+
+# visualizar resultados
+summary(modelo1)
+```
+
+# Modelo de Regressão Ordinal (Cumulative Link Models)
+
+## Pacotes
+
+```{r, eval=F}
+install.packages('ordinal')
+library(ordinal)
+```
+
+```{r}
+library(ordinal)
+```
+
+## Recodificar Variáveis
+
+```{r}
+# Recodificar VD
+databaseClean <- mutate(databaseClean, conversa_sobre_politicaOrd = 0)
+databaseClean$conversa_sobre_politicaOrd[databaseClean$conversa_sobre_politica == 1] <- 4
+databaseClean$conversa_sobre_politicaOrd[databaseClean$conversa_sobre_politica == 2] <- 3
+databaseClean$conversa_sobre_politicaOrd[databaseClean$conversa_sobre_politica == 3] <- 2
+databaseClean$conversa_sobre_politicaOrd[databaseClean$conversa_sobre_politica == 4] <- 1
+
+databaseClean$conversa_sobre_politicaOrd <- factor(databaseClean$conversa_sobre_politicaOrd, 
+                                        levels = c("1", "2", "3", "4"), 
+                                        labels = c('nunca','quase nunca','frequentemente', 'muita frequência'), ordered = TRUE)
+```
+
+## Executar Modelo CLM
+
+```{r, eval = F}
+#---------------------------------#
+# MODELO CLM
+#---------------------------------#
+
+head(databaseClean)
+
+# executar modelo
+modelo1 <- clm(conversa_sobre_politicaOrd ~ 
+                    violenciaPolicialTodosDias + 
+                      esgotamentoSim +
+                      escolaridade + 
+                      classeBaixa + 
+                      generoMulher + 
+                      racaNegroMulato, 
+                      data = databaseClean)
+```
+
+```{r, eval = F}
+# visualizar resultados do modelo
+summary(modelo1)
+#stargazer(modelo1,  type = "text", title = "Resultados Modelo 1", style = "ajps", apply.coef = exp,  p.auto=FALSE)
+
+# Estatisticas de ajuste 
+#nagelkerke(fit = modelo1)
+```
+
+
+
+####dados_modelo1.1000 <- sample_n(dados_modelo1, 1000)
+# Referências
+
+https://www.analyticsvidhya.com/blog/2016/02/multinomial-ordinal-logistic-regression/
+https://rpubs.com/rslbliss/r_logistic_ws

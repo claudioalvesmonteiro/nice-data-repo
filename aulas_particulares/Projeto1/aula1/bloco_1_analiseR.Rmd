@@ -1,0 +1,290 @@
+---
+title: Análise de Dados em R - Bloco 1
+author: Cláudio A. Monteiro
+date: Janeiro, 2018
+output:
+   rmdformats::readthedown:
+    highlight: kate
+---
+<style>
+body {
+text-align: justify}
+</style>
+
+```{r knitr_init, include=FALSE}
+library(knitr); library(rmdformats)
+
+## Global options
+options(max.print="75")
+opts_chunk$set(echo=TRUE,
+	             cache=TRUE,
+               prompt=FALSE,
+               tidy=TRUE,
+               comment=NA,
+               message=FALSE,
+               warning=FALSE)
+opts_knit$set(width=75)
+```
+
+</br>
+
+# **Introdução**
+
+A partir de agora iremos começar a trabalhar diretamente com a linguagem R, compreendendo seus conceitos e operações mais básicas.
+
+**Atenção!** Abra um *Script* e salve-o com o nome que desejar, numa pasta específica para seus estudos em R. É muito importante que você acompanhe o texto com o RStudio aberto, inserindo e executando os códigos no Script. Para tal você deve estar com a barra "|" piscando na mesma linha do código que quer executar, então tecle *Ctrl + Enter (Windows/Linux)* ou *Command + Enter (MAC)*.
+
+A funcionalidade mais básica do R é atuar como uma calculadora. Podemos fazer alguns cálculos básicos como:
+
+
+```{r, results=FALSE}
+3 + 5               # soma
+183082 - 21982      # subtracao
+92 * 1.6            # multiplicacao
+900 / 30            # divisao
+40**2               # exponencial
+```
+
+</br>
+
+# **Função**
+
+Uma *Função* é um *comando* que irá executar uma série de tarefas que lhe foi designada. Tudo o que *acontece* no R é uma Função. A Função sqrt() , por exemplo, nos retorna a raiz quadrada do que estiver entre parênteses:
+
+```{r}
+sqrt(9)
+```
+
+</br>
+
+**Atenção!** Toda função no R precisa ter uma documentação do que ela faz, como ela é estruturada e o que cada argumento[^1] da função significa. Para solicitar esse documento basta executar o seguinte comando:
+
+```{r, eval=FALSE}
+help(sqrt)
+
+```
+
+
+[^1]: Os argumentos de uma função são as informaões que ela necessita para ser executada, algumas funões tomam certos argumentos como padrão e outros é necessário que seja informado algo. Por exemplo, a Função plot() necessita do argumento x (dados no eixo das abscissas) e y (dados no eixo das ordenadas) para ser executada.
+
+O R também trabalha com operações lógicas,  retornando TRUE ou FALSE a partir da lógica que testamos.
+
+```{r, results=FALSE}
+
+2 == 3       # 2 igual a 3
+2 != 3       # 2 diferente de 3
+2 < 3        # 2 menor do que 3
+2 <= 3       # 2 menor ou igual a 3
+2 > 3        # 2 maior do que 3
+2 >= 3       # 2 maior ou igual a 3
+
+```
+
+</br>
+
+# **Objeto**
+
+Um conceito fundamental para entendermos o funcionamento da linguagem R é o de programação orientada a objetos.
+
+Objetos do mundo real têm duas caracteristicas: todos tem *estado* e *comportamento*. Gatos possuem estado (nome, cor, cheiro, fome) e comportamento (miar, pular, ronronar). Identificar o estado e comportamento de objetos do mundo real é uma ótima maneira de começar a pensar em termos de programaço orientada a objetos.
+
+Pare um pouco agora e olhe ao seu redor, observa os objetos que estão ao seu redor. Para cada objeto que você vê, pergunte a si mesmo:(1) Quais os estados que este objeto pode apresentar? (2) Quais os possiveis comportamentos este objeto pode desempenhar? Anote suas observações em uma folha.
+
+Você deve notar que objetos do mundo real variam em complexidade, a lâmpada do seu quarto tem dois possiveis estados (ligada e desligada) e dois possiveis comportamentos (ligar, desligar), mas seu ventilador, por exemplo, pode ter uma maior variação de estados (ligado, velocidade atual, desligado, posicionado para cima, posicionado para baixo) e comportamentos (aumentar velocidade, diminuir velocidade, desligar, girar, parar). Você também pode notar que alguns objetos estão dentro de outros objetos (uma caneta dentro de um estojo, um café dentro de um copo). Todas essas observaões do mundo real são traduzidas para o mundo da programaço orientada a objetos.
+
+Objetos computacionais são conceitualmente similares a objetos do mundo real: eles também possuem estado e comportamento. Um objeto armazena seu estado em **classes** (varia de acordo com a linguagem de programaço) e expõe seu comportamento por meio de **funções**.
+
+No R, tudo aquilo que **existe** é um objeto. Os objetos salvos aparecem no *Environment*, localizado no canto direito superior da tela do *RStudio*.
+
+#### Para ilustrar isso, vamos criar objetos! 
+
+```{r}
+
+# '<' e  '-'  , juntos : '<-'
+
+X <- 20
+
+X
+```
+
+
+**Atenção!** Podemos ver nos códigos que os comentários estão precedidos de cerquilha (#). Tudo o que estiver à sua direta será lido pelo R como um comentário e não será executado. É bem comum que em trabalhos que vão se tornando mais complexos nós nos esqueçamos do que cada código está fazendo. Por isso devemos inserir comentários detalhados ao longo de todos os códigos que digitamos pois eles servirão para nos orientar (e orientar outros) quando quisermos voltar ao que executamos.
+
+**Atenção!** Devemos nos atentar para criar objetos que sejam concisos em seu nome, identificando bem o que eles representam. Evita-se também o uso de acentos, tantos nos códigos como em comentários.
+
+</br>
+
+## 1. **Tipos de objetos no R**
+
+Os objetos no R podem armazenar diferentes tipos de informação. As caracteristicas dessas informações e como elas estão organizadas definirão a classe do objeto que as armazena.
+
+A Função c() combina os valores que está entre parênteses. Ela se faz necessária na criação de um objeto com mais de uma dimensão. Vale salientar que no R as informações são separadas por ',' (virgula) e a decimal por '.' (ponto). 
+
+
+#### Logical (lógico)
+```{r}
+x1 <- c(TRUE, FALSE)   # combina os valores TRUE e FALSE e atribui a x1
+x1
+class(x1)
+
+```
+
+#### Integer (quantitativa discreta)
+```{r}
+
+x2 <- 1:1000             # combina os numeros inteiros de 9 a 29 e atribui a x2 
+x2
+class(x2)
+
+```
+
+
+#### Character (qualitativa nominal)
+```{r}
+nome <- c("Fulano", "Sicrano", "Beltrano") 
+nome
+class(nome)
+
+```
+**Atenção!** Como podemos observar, para criar objetos do tipo character, devemos colocar as informaões entre aspas.
+
+#### Numeric (quantitativa continua)
+```{r}
+altura <- c( 1.72, 1.58, 2.01) 
+altura
+class(altura)
+
+```
+
+#### Data Frame (banco de dados)
+```{r}
+dados_altura <- data.frame(nome, altura)
+dados_altura
+class(dados_altura)
+```
+
+**Atenção!** Com o RStudio aberto será possivel ver no *Environment* todos os objetos que estamos criando.
+
+# **Banco de Dados**
+
+## 1. **Diretório de Trabalho**
+
+O R trabalha com uma pasta especifica em seu computador, importando e salvando arquivos nesta pasta, chamada de *diretório de trabalho* (*Working Directory*). A Função getwd() informa qual o diretório atual em que se está trabalhando:
+
+```{r, results=FALSE}
+getwd()
+```
+
+
+Crie uma pasta de trabalho para os estudos em R em seu computador e use a Função setwd() para defini-la como seu diretório de trabalho. Clique com o botão direito do seu mouse nesta pasta, selecione propriedades, copie o caminho computacional daquela pasta, cole no lugar do exemplo entre aspas (certifique-se de que as barras estão viradas para o lado direito). Por fim, Função list.files() lista todos os arquivos presentes no seu diretório.
+
+```{r, eval=FALSE}
+
+setwd("INSIRA/SEU/CAMINHO/AQUI/Estudos em R")
+
+list.files()
+```
+
+## 2. **Importar Bases**
+
+Para ler um arquivo, algo importante ao saber o formato que ele se encontra. Esse formato deve preencher alguns pré-requisitos das funões de leitura. A tabela abaixo lista as funões para importar os tipos mais comuns segundo a extensÃ£o do arquivo e o pacote necessário.
+
+| **Formato do Arquivo**      | **Função**                   | **Pacote** |
+| --------------------------- |:---------------------------: | :--------: |
+| .rdata                      | load()                       | base       |
+| .csv                        | read.csv()                   | base       |
+| .xls e .xlsx (Excel)        | read_excel()                 | readxl     |
+| .sav (SPSS)                 | read_sav()                   | haven      |
+| .dat (STATA)                | read_stata()                 | haven      |
+| .sas7bdat (SAS)             | read_sas()                   | haven      |
+
+Vamos agora carregar o banco de dados do Latinobarômetro que está em formato `.rdata`;
+
+```{r}
+load("~/Documents/TRABALHOS/git_projects/aulas_analisededados/aulas_particulares/Projeto1/dados/Latinobarometro_2015_Eng.rdata")
+
+```
+
+# **Manipulação de Dados**
+
+## 1. **Visualizar Bancos de Dados**
+
+Para visualizar as informações contidas em uma base de dados podemos usar uma série de ferramentas no R. Dentre elas:
+```{r, eval=FALSE}
+# Retorna a estrutura do banco
+str(Latinobarometro_2015_Eng)  
+
+# Abre uma janela para visualizar uma planilha da base (NAO usar em base de dados grande)
+# View(Latinobarometro_2015_Eng) 
+
+# Visualizar primeira linhas do banco
+head(Latinobarometro_2015_Eng)  
+
+# Ultimas linhas 
+tail(Latinobarometro_2015_Eng)  
+
+# Retorna os nomes das colunas no banco
+colnames(Latinobarometro_2015_Eng)
+```
+
+</br>
+
+## 2. **Manipular Estrutura do Banco**
+
+```{r, results='hide',message=FALSE}
+
+# selecionar primeira coluna no banco
+Latinobarometro_2015_Eng[,1]
+
+# selecionar primeira linha no banco
+Latinobarometro_2015_Eng[1,]
+
+# remover primeira coluna no banco e atribuir a novo objeto
+Latinobarometro_edit <- Latinobarometro_2015_Eng[,-1]
+
+# remover 10 primeiras linha no banco
+Latinobarometro_edit <- Latinobarometro_edit[-c(1:10),]
+
+# visualizar primeiros casos no banco 
+head(Latinobarometro_edit)
+```
+
+
+```{r, eval = FALSE, results='hide',message=FALSE}
+
+# selecionar colunas no banco por nome
+database <- Latinobarometro_2015_Eng[,c("P32N", "P63NJ.G", "S23", "S12", "S6", "S24.K", "S18")]
+
+# visualizar banco
+View(database)
+
+# renomear colunas
+colnames(database) <- c()
+
+```
+
+
+```{r, echo=FALSE, results='hide',message=FALSE}
+# selecionar colunas no banco por nome
+database <- Latinobarometro_2015_Eng[,c("P32N", "P63NJ.G", "S23", "S12", "S6", "S24.K", "S18")]
+# renomear colunas
+colnames(database) <- c("P32N", "violencia_policial", "raca", "genero", "classe_social", "esgotamento", "escolaridade")
+```
+
+
+## 2.**Manipulando Dados com Condicionais**
+
+As vezes você quer ir além de simplesmente selecionar uma coluna ou linha especifica. Você pode querer selecionar apenas os casos de acidentes em que houve vítima, os que envolveram ciclistas ou ainda os que envolveram moto ou caminhão e deixaram vítima. Para tal podemos trabalhar com operações lógicas utilizando as informações que aprendemos até agora. 
+
+```{r}
+
+# as.factor() transforma um vector em factor (vetor com informacao categorica)
+database$violencia_policial <- as.factor(database$violencia_policial)
+
+# ver categorias na variavel
+levels(database$violencia_policial )
+
+# Selecionar casos com base no valor de uma variavel
+database <- database[database$genero == 1,]
+```
+
