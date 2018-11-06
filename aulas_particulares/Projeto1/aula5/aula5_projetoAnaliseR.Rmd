@@ -1,6 +1,6 @@
 ---
-title: VisualizaÁ„o de Dados Avan√ßada em R
-author: Cl·udio A. Monteiro
+title: Visualiza√ß√£o de Dados Avan√ßada em R
+author: Cl√°udio A. Monteiro
 date: Outubro, 2018
 output:
    rmdformats::readthedown:
@@ -26,12 +26,12 @@ opts_chunk$set(echo=TRUE,
 opts_knit$set(width=75)
 ```
 
-# IntroduÁ„o
+# Introdu√ß√£o
 
-Nessa aula veremos algumas ferramentas que R disp√µe para produÁ„o de representa√ß√µes gr·ficas de informa√ß√µes. Vamos explorar (1) **OpÁıes de ediÁ„o no ggplot2**; (2) **VisualizaÁ„o Espacial**; e (3) **VisualizaÁ„o de Textos**. Essas visualiza√ß√µes s√£o √∫teis para diversos conhecimentos e proporcionam um diferencial na atuaÁ„o profissional, acad√™mica ou pessoal. O intuito principal aqui √© comunicar informaÁ„o de forma **eficiente**, de modo que qualquer pessoa compreenda facilmente a mensagem que a imagem quer passar; e **agrad·vel**, para que facilite a transmiss√£o e recepÁ„o da mensagem.
+Nessa aula veremos algumas ferramentas que R disp√µe para produ??o de representa√ß√µes gr?ficas de informa√ß√µes. Vamos explorar (1) **Op√ß√£es de edi√ß√£o no ggplot2**; (2) **Visualiza√ß√£o Espacial**; e (3) **Minera√ß√£o de Textos**. Essas visualiza√ß√µes s√£o √∫teis para diversos conhecimentos e proporcionam um diferencial na atua√ß√£o profissional, acad√™mica ou pessoal. O intuito principal aqui √© comunicar informa√ß√£o de forma **eficiente**, de modo que qualquer pessoa compreenda facilmente a mensagem que a imagem quer passar; e **agrad√°vel**, para que facilite a transmiss√£o e recep√ß√£o da mensagem.
 
 
-Para visualizar a distribuiÁ„o das informa√ß√µes vamos utilizar a base de dados do [AtlasBrasil](http://www.atlasbrasil.org.br/2013/pt/)
+Para visualizar a distribui√ß√£o das informa√ß√µes vamos utilizar a base de dados do [AtlasBrasil](http://www.atlasbrasil.org.br/2013/pt/)
 
 ```{r, eval=F}
 # carregar dados
@@ -45,7 +45,7 @@ AtlasBrasil <- read_excel("/home/pacha/Documents/Consultorias/Analytique/Projeto
 ```
 
 
-# Op√ß√µes de EdiÁ„o no `ggplot2`
+# Op√ß√µes de Edi??o no `ggplot2`
 
 ```{r}
 
@@ -77,7 +77,7 @@ tema_massa <- function(base_size = 12, base_family = "") {
 
 ```{r}
 # grafico scatter plot simples
-ggplot(data = AtlasBrasil, aes(x =`Õndice de Gini 2010`, 
+ggplot(data = AtlasBrasil, aes(x =`√çndice de Gini 2010`, 
                                y = AtlasBrasil$`Taxa de analfabetismo - 11 a 14 anos 2010`, 
                                group = 1)) +
   geom_point()
@@ -85,40 +85,40 @@ ggplot(data = AtlasBrasil, aes(x =`Õndice de Gini 2010`,
 
 ```{r}
 # grafico scatter plot editado
-ggplot(data = AtlasBrasil, aes(x =`Õndice de Gini 2010`, y = AtlasBrasil$`Taxa de analfabetismo - 11 a 14 anos 2010`, group = 1)) +
+ggplot(data = AtlasBrasil, aes(x =`√çndice de Gini 2010`, y = AtlasBrasil$`Taxa de analfabetismo - 11 a 14 anos 2010`, group = 1)) +
   geom_point(color = "#003152", size = 1.3) +
   geom_smooth(method="lm", color = "black")+
-  labs(Title = "RelaÁ„o Entre Desigualdade e Analfabetismo", 
-       y = "Õndice de GINI",
+  labs(Title = "Rela√ß√£o Entre Desigualdade e Analfabetismo", 
+       y = "√çndice de GINI",
        x = "Taxa de Analfabetismo")+
   theme_minimal()
 ```
 
 ```{r}
 # grafico scatter plot com edicao personalizada
-ggplot(data = AtlasBrasil, aes(x =`Õndice de Gini 2010`, y = AtlasBrasil$`Taxa de analfabetismo - 11 a 14 anos 2010`, group = 1)) +
+ggplot(data = AtlasBrasil, aes(x =`√çndice de Gini 2010`, y = AtlasBrasil$`Taxa de analfabetismo - 11 a 14 anos 2010`, group = 1)) +
   geom_point(color = "#003152", size = 1.3) +
   geom_smooth(method="lm", color = "black")+
-  labs(Title = "RelaÁ„o Entre Desigualdade e Analfabetismo", 
-       y = "Õndice de GINI",
+  labs(Title = "Rela√ß√£o Entre Desigualdade e Analfabetismo", 
+       y = "?ndice de GINI",
        x = "Taxa de Analfabetismo")+
   tema_massa()
 ```
 
 
-# An·lise Espacial em R
+# An√°lise Espacial em R
 
-## IntroduÁ„o
+## Introdu??o
 
-Agora vamos adentrar no mundo da visualizaÁ„o espacial em R. Como j· sabemos, o R conta com diversos pacotes para performar uma s√©rie de an·lises. Aqui vamos trabalhar com alguns pacotes de manipulaÁ„o de dados geogr·ficos e com o pacote **ggplot2** para a visualizaÁ„o.
+Agora vamos adentrar no mundo da visualiza??o espacial em R. Como j? sabemos, o R conta com diversos pacotes para performar uma s√©rie de an?lises. Aqui vamos trabalhar com alguns pacotes de manipula??o de dados geogr?ficos e com o pacote **ggplot2** para a visualiza??o.
 
-Para visualizar informa√ß√µes distribuÌdas no espa√ßo devemos primeiro ter acesso a uma base cartogr·fica do espa√ßo que queremos projetar essas informa√ß√µes. Por exemplo, se queremos visualizar a distruibuiÁ„o da populaÁ„o brasileira no mapa dos estados precisamos de um arquivo com o **desenho cartogr·fico** do Brasil e os *polÌgonos* de cada Estado. Esse arquivos podem ter os formatos **.geoJSON**, **.CSV**, **.KML**, **.SHP**, entre outros.
+Para visualizar informa√ß√µes distribu?das no espa√ßo devemos primeiro ter acesso a uma base cartogr?fica do espa√ßo que queremos projetar essas informa√ß√µes. Por exemplo, se queremos visualizar a distruibui??o da popula??o brasileira no mapa dos estados precisamos de um arquivo com o **desenho cartogr?fico** do Brasil e os *pol?gonos* de cada Estado. Esse arquivos podem ter os formatos **.geoJSON**, **.CSV**, **.KML**, **.SHP**, entre outros.
 
-Hoje vamos utilizar o formato **.SHP**, tamb√©m chamado de **shapefile**. Acesse o link [aqui](https://github.com/claudioalvesmonteiro/municipality-inovation/tree/master/Original%20Data/Geodata) e baixe todos os arquivos com "estados_2010" para seu diretÛrio de trabalho.
+Hoje vamos utilizar o formato **.SHP**, tamb√©m chamado de **shapefile**. Acesse o link [aqui](https://github.com/claudioalvesmonteiro/municipality-inovation/tree/master/Original%20Data/Geodata) e baixe todos os arquivos com "estados_2010" para seu diret?rio de trabalho.
 
 ## Importando o arquivo
 
-Para importar o arquivo instale o pacote "raster", bem como suas depend√™ncias. Neste pacote h· a funÁ„o *shapefile()*, que funciona como a *read.csv()*, mas para arquivos do tipo **.SHP**.
+Para importar o arquivo instale o pacote "raster", bem como suas depend√™ncias. Neste pacote h? a fun??o *shapefile()*, que funciona como a *read.csv()*, mas para arquivos do tipo **.SHP**.
 
 ```{r, eval=F}
 # carregar pacote
@@ -133,9 +133,9 @@ library(raster)
 shp_brasil_estados <- shapefile("/home/pacha/Documents/Consultorias/Analytique/Projetos/aulas_analisededados/aulas_particulares/Projeto1/dados/Geodata/estados_2010.shp")
 ```
 
-## VisualizaÁ„o do Shape
+## Visualiza??o do Shape
 
-Para produzir um gr·fico espacial do tipo ggplot precisamos converter o objeto que importamos como um `SpatialPolygonsDataFrame`, uma base de dados com informa√ß√µes georreferenciais, para um tipo de dados `dataframe`.
+Para produzir um gr?fico espacial do tipo ggplot precisamos converter o objeto que importamos como um `SpatialPolygonsDataFrame`, uma base de dados com informa√ß√µes georreferenciais, para um tipo de dados `dataframe`.
 
 ```{r}
 # carregar pacote de visualizacao
@@ -163,21 +163,21 @@ shp_brasil_estados.df <- fortify(shp_brasil_estados)
 shp_brasil_estados.df <- join(shp_brasil_estados.df, shp_brasil_estados@data, by="id")
 
 # combinar duas bases
-AtlasBrasil$codigo_ibg <- as.character(AtlasBrasil$CÛdigo)
+AtlasBrasil$codigo_ibg <- as.character(AtlasBrasil$C?digo)
 shp_brasil_estados.df <- merge(shp_brasil_estados.df, AtlasBrasil, by = "codigo_ibg")
 
 # mapa 1
 ggplot(data = shp_brasil_estados.df, aes(x = long, y = lat, group = group)) + 
       geom_polygon(aes(group = group, fill = `IDHM 2010`))+  # desenhar poligonos
       geom_path(color="grey")+                               # desenhar fronteiras
-      labs(title = "DistribuiÁ„o do IDHM por Estado")+
+      labs(title = "Distribui??o do IDHM por Estado")+
       coord_equal() 
 
 # mapa 2
 ggplot(data = shp_brasil_estados.df, aes(x = long, y = lat, group = group)) + 
       geom_polygon(aes(group = group, fill = `IDHM 2010`))+ # desenhar poligonos
       geom_path(color=NA)+                                  # desenhar fronteiras
-      labs(title = "DistribuiÁ„o do IDHM por Estado")+
+      labs(title = "Distribui??o do IDHM por Estado")+
       coord_equal() +
       theme_minimal()
 
@@ -186,13 +186,13 @@ library(viridis)
 ggplot(data = shp_brasil_estados.df, aes(x = long, y = lat, group = group)) + 
       geom_polygon(aes(group = group, fill = `IDHM 2010`))+ # desenhar poligonos
       geom_path(color=NA)+                                  # desenhar fronteiras
-      labs(title = "DistribuiÁ„o do IDHM por Estado")+
+      labs(title = "Distribui??o do IDHM por Estado")+
       coord_equal() +
       scale_fill_viridis()+
       theme_minimal()
 ```
 
-# An·lise/MineraÁ„o de Texto em R
+# An?lise/Minera??o de Texto em R
 
 ## Carregar arquivos e pacotes
 ```{r, eval=F}
@@ -222,7 +222,7 @@ install.packages("tm")
 ```
 
 
-## Tratar//padronizar textos para an·lise
+## Tratar//padronizar textos para an?lise
 
 ```{r}
 #====== criar funcao para limpar dados
@@ -246,7 +246,7 @@ Fernando  <- clean.text(fernando_pessoa)
 Mario     <- clean.text(mario_quintana)
 ```
 
-## MineraÁ„o
+## Minera??o
 
 ```{r}
 # analisar termos mais frequentes em cada autor
