@@ -1,7 +1,7 @@
 ---
 title: Visualização de Dados Avançada em R
 author: Cláudio A. Monteiro
-date: Outubro, 2018
+date: Novembro, 2018
 output:
    rmdformats::readthedown:
     highlight: kate
@@ -41,11 +41,12 @@ AtlasBrasil <- read_excel("dados/AtlasBrasil_Consulta.xlsx")
 
 ```{r, echo = F}
 library(readxl)
-AtlasBrasil <- read_excel("/home/pacha/Documents/Consultorias/Analytique/Projetos/aulas_analisededados/aulas_particulares/Projeto1/dados/AtlasBrasil_Consulta.xlsx")
+getwd()
+AtlasBrasil <- read_excel("C:/Users/Monteiro-DataPC/Documents/R/aulas_analisededados/aulas_particulares/Projeto1/dados/AtlasBrasil_Consulta.xlsx")
 ```
 
 
-# Opções de Edi??o no `ggplot2`
+# Opções de Edição no ggplot2
 
 ```{r}
 
@@ -100,7 +101,7 @@ ggplot(data = AtlasBrasil, aes(x =`Índice de Gini 2010`, y = AtlasBrasil$`Taxa 
   geom_point(color = "#003152", size = 1.3) +
   geom_smooth(method="lm", color = "black")+
   labs(Title = "Relação Entre Desigualdade e Analfabetismo", 
-       y = "?ndice de GINI",
+       y = "Índice de GINI",
        x = "Taxa de Analfabetismo")+
   tema_massa()
 ```
@@ -130,17 +131,14 @@ shp_brasil_estados <- shapefile("dados/Geodata/estados_2010.shp")
 
 ```{r, echo=F}
 library(raster)
-shp_brasil_estados <- shapefile("/home/pacha/Documents/Consultorias/Analytique/Projetos/aulas_analisededados/aulas_particulares/Projeto1/dados/Geodata/estados_2010.shp")
+shp_brasil_estados <- shapefile("C:/Users/Monteiro-DataPC/Documents/R/aulas_analisededados/aulas_particulares/Projeto1/dados/Geodata/estados_2010.shp")
 ```
 
-## Visualiza??o do Shape
+## Visualização do Shape
 
 Para produzir um gráfico espacial do tipo ggplot precisamos converter o objeto que importamos como um `SpatialPolygonsDataFrame`, uma base de dados com informações georreferenciais, para um tipo de dados `dataframe`.
 
 ```{r}
-# carregar pacote de visualizacao
-library(ggplot2)
-
 # tranformar shapefile em polygonsdataframe
 data_fortity <- fortify(shp_brasil_estados, region = "nome")
 
@@ -163,21 +161,21 @@ shp_brasil_estados.df <- fortify(shp_brasil_estados)
 shp_brasil_estados.df <- join(shp_brasil_estados.df, shp_brasil_estados@data, by="id")
 
 # combinar duas bases
-AtlasBrasil$codigo_ibg <- as.character(AtlasBrasil$C?digo)
+AtlasBrasil$codigo_ibg <- as.character(AtlasBrasil$`Código`)
 shp_brasil_estados.df <- merge(shp_brasil_estados.df, AtlasBrasil, by = "codigo_ibg")
 
 # mapa 1
 ggplot(data = shp_brasil_estados.df, aes(x = long, y = lat, group = group)) + 
       geom_polygon(aes(group = group, fill = `IDHM 2010`))+  # desenhar poligonos
       geom_path(color="grey")+                               # desenhar fronteiras
-      labs(title = "Distribui??o do IDHM por Estado")+
+      labs(title = "Distribuição do IDHM por Estado")+
       coord_equal() 
 
 # mapa 2
 ggplot(data = shp_brasil_estados.df, aes(x = long, y = lat, group = group)) + 
       geom_polygon(aes(group = group, fill = `IDHM 2010`))+ # desenhar poligonos
       geom_path(color=NA)+                                  # desenhar fronteiras
-      labs(title = "Distribui??o do IDHM por Estado")+
+      labs(title = "Distribuição do IDHM por Estado")+
       coord_equal() +
       theme_minimal()
 
@@ -201,18 +199,24 @@ ggplot(data = shp_brasil_estados.df, aes(x = long, y = lat, group = group)) +
 alvares <- paste(readLines("dados/alvares.txt"), collapse=" ")
 fernando_pessoa <- paste(readLines("dados/fernando_pessoa.txt"), collapse=" ")
 mario_quintana <- paste(readLines("dados/mario_quintana.txt"), collapse=" ")
+
+# transformar encoding dos arquivos
+Encoding(alvares) <- "Latin-1"
+Encoding(fernando_pessoa) <- "Latin-1"
+Encoding(mario_quintana) <- "Latin-1"
 ```
 
-```{r}
-alvares <- paste(readLines("/home/pacha/Documents/Consultorias/Analytique/Projetos/aulas_analisededados/aulas_particulares/Projeto1/dados/alvares.txt", encoding = "UTF-8"), collapse=" ")
-fernando_pessoa <- paste(readLines("/home/pacha/Documents/Consultorias/Analytique/Projetos/aulas_analisededados/aulas_particulares/Projeto1/dados/fernando_pessoa.txt"), collapse=" ")
-mario_quintana <- paste(readLines("/home/pacha/Documents/Consultorias/Analytique/Projetos/aulas_analisededados/aulas_particulares/Projeto1/dados/mario_quintana.txt"), collapse=" ")
+```{r, echo=F}
+alvares <- paste(readLines("C:/Users/Monteiro-DataPC/Documents/R/aulas_analisededados/aulas_particulares/Projeto1/dados/alvares.txt", encoding = "UTF-8"), collapse=" ")
+fernando_pessoa <- paste(readLines("C:/Users/Monteiro-DataPC/Documents/R/aulas_analisededados/aulas_particulares/Projeto1/dados/fernando_pessoa.txt"), collapse=" ")
+mario_quintana <- paste(readLines("C:/Users/Monteiro-DataPC/Documents/R/aulas_analisededados/aulas_particulares/Projeto1/dados/mario_quintana.txt"), collapse=" ")
 
 Encoding(alvares) <- "Latin-1"
-cat(namb)
+Encoding(fernando_pessoa) <- "Latin-1"
+Encoding(mario_quintana) <- "Latin-1"
 ```
 
-```{r}
+```{r, eval=F}
 # visualizar arquivos
 alvares
 fernando_pessoa
@@ -223,14 +227,14 @@ install.packages("tm")
 ```
 
 
-## Tratar//padronizar textos para an?lise
+## Tratar//padronizar textos para análise
 
 ```{r}
 #====== criar funcao para limpar dados
 clean.text <- function(x){ 
   
   library(tm)                 # carrega pacote 'tm'
-#  x <- tolower(x)             # transforma em caixa baixa
+  x <- tolower(x)             # transforma em caixa baixa
   x <- removePunctuation(x)   # remove pontuacao
   x <- removeNumbers(x)       # remove numeros
   x <- stripWhitespace(x)     # remove espaco em branco
@@ -247,16 +251,19 @@ Fernando  <- clean.text(fernando_pessoa)
 Mario     <- clean.text(mario_quintana)
 ```
 
-## Minera??o
+## Mineração
 
 ```{r}
+# instalar pacote
+library(qdap)
+
 # analisar termos mais frequentes em cada autor
 freq_alvares <- freq_terms(Alvares, Inf, at.least = 3)
 freq_fernando <- freq_terms(Fernando, Inf, at.least = 3)
 freq_mario <- freq_terms(Mario, Inf, at.least = 3)
 
 # selecionar as 15 palavras mais citadas
-freq_alvares  <- freq_alvares[1:15,]
+freq_alvares15  <- freq_alvares[1:15,]
 freq_fernando <- freq_fernando[1:15,]
 freq_mario    <- freq_mario[1:15,]
 ```
@@ -265,25 +272,42 @@ freq_mario    <- freq_mario[1:15,]
 
 ```{r}
 # Alvares de Azevedo #
-p1  <- ggplot(freq_alvares, aes(x = reorder(freq_alvares$WORD, + freq_alvares$FREQ), y = freq_alvares$FREQ)) + 
+p1  <- ggplot(freq_alvares15, aes(x = reorder(freq_alvares15$WORD, + freq_alvares15$FREQ), y = freq_alvares15$FREQ)) + 
   geom_bar(stat = "identity", fill = "black") +
   theme(panel.background = element_rect(fill = 'white'))+
-  labs(x = "Alvares de Azevedo", y = "Frequencia" )
+  labs(x = "Alvares de Azevedo", y = "Frequencia" )+
+  theme_minimal()+
   coord_flip()
 
 # Fernando Pessoa #
 p2  <- ggplot(freq_fernando, aes(x = reorder(freq_fernando$WORD, + freq_fernando$FREQ), y = freq_fernando$FREQ)) +   geom_bar(stat = "identity", fill = "black") +
   theme(panel.background = element_rect(fill = 'white'))+
   labs(x = "Fernando Pessoa", y = "Frequencia" )+
+  theme_minimal()+
   coord_flip()
   
 # Mario Quintana #
 p3  <- ggplot(freq_mario, aes(x = reorder(freq_mario$WORD, + freq_mario$FREQ), y = freq_mario$FREQ)) + 
   geom_bar(stat = "identity", fill = "black") +
   theme(panel.background = element_rect(fill = 'white'))+
-  labs(x = "Mario Quintana", y = "Frequencia" )
+  labs(x = "Mario Quintana", y = "Frequencia" )+
+  theme_minimal()+
   coord_flip()
   
 #===== Grafico comparativo   #
 library(gridExtra)
 grid.arrange(p1, p2, p3, top = "Poetas Brasileiros")       
+```
+
+## Nuvem de Palavras (Wordcloud)
+
+```{r}
+# carregar pacote e executar wordcloud
+library(wordcloud)
+
+wordcloud(words = freq_alvares$WORD, freq = freq_alvares$FREQ, min.freq = 1,
+          max.words=200, random.order=FALSE, rot.per=0.35, 
+          colors=brewer.pal(8, "Dark2"))
+```
+
+

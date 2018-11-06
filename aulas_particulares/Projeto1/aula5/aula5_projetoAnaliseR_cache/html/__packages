@@ -8,3 +8,12 @@ readxl
 plyr
 viridisLite
 viridis
+NLP
+tm
+qdapDictionaries
+qdapRegex
+qdapTools
+RColorBrewer
+qdap
+gridExtra
+wordcloud
