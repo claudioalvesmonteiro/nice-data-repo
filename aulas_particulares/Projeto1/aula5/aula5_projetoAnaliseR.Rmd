@@ -28,7 +28,7 @@ opts_knit$set(width=75)
 
 # Introdução
 
-Nessa aula veremos algumas ferramentas que R dispõe para produ??o de representações gr?ficas de informações. Vamos explorar (1) **Opçães de edição no ggplot2**; (2) **Visualização Espacial**; e (3) **Mineração de Textos**. Essas visualizações são úteis para diversos conhecimentos e proporcionam um diferencial na atuação profissional, acadêmica ou pessoal. O intuito principal aqui é comunicar informação de forma **eficiente**, de modo que qualquer pessoa compreenda facilmente a mensagem que a imagem quer passar; e **agradável**, para que facilite a transmissão e recepção da mensagem.
+Nessa aula veremos algumas ferramentas que R dispõe para produ??o de representações gr?ficas de informações. Vamos explorar (1) **Opções de edição no ggplot2**; (2) **Visualização Espacial**; e (3) **Mineração de Textos**. Essas visualizações são úteis para diversos conhecimentos e proporcionam um diferencial na atuação profissional, acadêmica ou pessoal. O intuito principal aqui é comunicar informação de forma **eficiente**, de modo que qualquer pessoa compreenda facilmente a mensagem que a imagem quer passar; e **agradável**, para que facilite a transmissão e recepção da mensagem.
 
 
 Para visualizar a distribuição das informações vamos utilizar a base de dados do [AtlasBrasil](http://www.atlasbrasil.org.br/2013/pt/)
@@ -108,17 +108,17 @@ ggplot(data = AtlasBrasil, aes(x =`Índice de Gini 2010`, y = AtlasBrasil$`Taxa 
 
 # Análise Espacial em R
 
-## Introdu??o
+## Introdução
 
-Agora vamos adentrar no mundo da visualiza??o espacial em R. Como j? sabemos, o R conta com diversos pacotes para performar uma série de an?lises. Aqui vamos trabalhar com alguns pacotes de manipula??o de dados geogr?ficos e com o pacote **ggplot2** para a visualiza??o.
+Agora vamos adentrar no mundo da visualização espacial em R. Como já sabemos, o R conta com diversos pacotes para performar uma série de análises. Aqui vamos trabalhar com alguns pacotes de manipulaçã de dados geográficos e com o pacote **ggplot2** para a visualização.
 
-Para visualizar informações distribu?das no espaço devemos primeiro ter acesso a uma base cartogr?fica do espaço que queremos projetar essas informações. Por exemplo, se queremos visualizar a distruibui??o da popula??o brasileira no mapa dos estados precisamos de um arquivo com o **desenho cartogr?fico** do Brasil e os *pol?gonos* de cada Estado. Esse arquivos podem ter os formatos **.geoJSON**, **.CSV**, **.KML**, **.SHP**, entre outros.
+Para visualizar informações distribu?das no espaço devemos primeiro ter acesso a uma base cartográfica do espaço que queremos projetar essas informações. Por exemplo, se queremos visualizar a distruibuição da população brasileira no mapa dos estados precisamos de um arquivo com o **desenho cartográfico** do Brasil e os *polígonos* de cada Estado. Esse arquivos podem ter os formatos **.geoJSON**, **.CSV**, **.KML**, **.SHP**, entre outros.
 
-Hoje vamos utilizar o formato **.SHP**, também chamado de **shapefile**. Acesse o link [aqui](https://github.com/claudioalvesmonteiro/municipality-inovation/tree/master/Original%20Data/Geodata) e baixe todos os arquivos com "estados_2010" para seu diret?rio de trabalho.
+Hoje vamos utilizar o formato **.SHP**, também chamado de **shapefile**. Acesse o link [aqui](https://github.com/claudioalvesmonteiro/municipality-inovation/tree/master/Original%20Data/Geodata) e baixe todos os arquivos com "estados_2010" para seu diretório de trabalho.
 
 ## Importando o arquivo
 
-Para importar o arquivo instale o pacote "raster", bem como suas dependências. Neste pacote h? a fun??o *shapefile()*, que funciona como a *read.csv()*, mas para arquivos do tipo **.SHP**.
+Para importar o arquivo instale o pacote "raster", bem como suas dependências. Neste pacote há a função *shapefile()*, que funciona como a *read.csv()*, mas para arquivos do tipo **.SHP**.
 
 ```{r, eval=F}
 # carregar pacote
@@ -135,7 +135,7 @@ shp_brasil_estados <- shapefile("/home/pacha/Documents/Consultorias/Analytique/P
 
 ## Visualiza??o do Shape
 
-Para produzir um gr?fico espacial do tipo ggplot precisamos converter o objeto que importamos como um `SpatialPolygonsDataFrame`, uma base de dados com informações georreferenciais, para um tipo de dados `dataframe`.
+Para produzir um gráfico espacial do tipo ggplot precisamos converter o objeto que importamos como um `SpatialPolygonsDataFrame`, uma base de dados com informações georreferenciais, para um tipo de dados `dataframe`.
 
 ```{r}
 # carregar pacote de visualizacao
@@ -192,9 +192,10 @@ ggplot(data = shp_brasil_estados.df, aes(x = long, y = lat, group = group)) +
       theme_minimal()
 ```
 
-# An?lise/Minera??o de Texto em R
+# Análise/Mineração de Texto em R
 
 ## Carregar arquivos e pacotes
+
 ```{r, eval=F}
 # carregar arquivos de texto em formato .txt
 alvares <- paste(readLines("dados/alvares.txt"), collapse=" ")
@@ -260,7 +261,7 @@ freq_fernando <- freq_fernando[1:15,]
 freq_mario    <- freq_mario[1:15,]
 ```
 
-## Visualizacao 
+## Visualização 
 
 ```{r}
 # Alvares de Azevedo #
