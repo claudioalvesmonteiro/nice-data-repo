@@ -120,9 +120,54 @@ text-align: justify}
 <p></br></p>
 <div id="modelos-categoricos-de-regressao" class="section level1">
 <h1>Modelos Categóricos de Regressão</h1>
+<div id="carregar-e-tratar-dados" class="section level5">
+<h5>Carregar e tratar dados</h5>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># carregar banco de dados</span>
+<span class="kw">load</span>(<span class="st">&quot;Latinobarometro_2015_Eng.rdata&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># selecionar colunas no banco por nome</span>
+database &lt;-<span class="st"> </span>Latinobarometro_<span class="dv">2015</span>_Eng[, <span class="kw">c</span>(<span class="st">&quot;P20TGB.A&quot;</span>, <span class="st">&quot;P21ST.C&quot;</span>, <span class="st">&quot;P32N&quot;</span>, <span class="st">&quot;P63NJ.G&quot;</span>, 
+    <span class="st">&quot;S23&quot;</span>, <span class="st">&quot;S12&quot;</span>, <span class="st">&quot;S6&quot;</span>, <span class="st">&quot;S24.K&quot;</span>, <span class="st">&quot;S18&quot;</span>)]
+
+<span class="co"># renomear colunas</span>
+<span class="kw">colnames</span>(database) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;conversa_sobre_politica&quot;</span>, <span class="st">&quot;participa_protestos&quot;</span>, <span class="st">&quot;interesse_político&quot;</span>, 
+    <span class="st">&quot;violencia_policial&quot;</span>, <span class="st">&quot;raca&quot;</span>, <span class="st">&quot;genero&quot;</span>, <span class="st">&quot;classe_social&quot;</span>, <span class="st">&quot;esgotamento&quot;</span>, 
+    <span class="st">&quot;escolaridade&quot;</span>)
+
+<span class="co"># selecionar casos completos (remover missing cases)</span>
+databaseClean &lt;-<span class="st"> </span>database[<span class="kw">complete.cases</span>(database), ]</code></pre></div>
+</div>
 <div id="regressao-logistica-binomial-binomial-logit-reg." class="section level2">
 <h2>Regressão Logística Binomial (Binomial Logit Reg.)</h2>
 <p>Utilizamos o modelo de regressão logística binomial quando o fenômeno de interesse assume duas categorias (0 e 1). Estima-se os efeitos das variáveis independentes sobre a chance da manifestação do fenômeno (1) em relação ao valor 0. Por exemplo, no nosso primeiro modelo vamos estimar o efeito da percepção da <code>violencia policial</code> (presença de violência policial quase todos os dias) sobre a chance de <code>já ter participado de protestos</code> (1), em relação a <code>poderia participar</code> + <code>nunca participaria</code> (0).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># carregar pacote de visualizacao de modelos estatisticos</span>
+<span class="kw">library</span>(stargazer)
+
+<span class="co"># pacote manipulacao de dados</span>
+<span class="kw">library</span>(dplyr)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Recodificar VD
+databaseClean &lt;-<span class="st"> </span><span class="kw">mutate</span>(databaseClean, <span class="dt">participa_protestoParticipou =</span> <span class="kw">ifelse</span>(databaseClean<span class="op">$</span>participa_protestos <span class="op">==</span><span class="st"> </span>
+<span class="st">    </span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>))
+
+<span class="co"># Recodificar Violencia policial</span>
+databaseClean &lt;-<span class="st"> </span><span class="kw">mutate</span>(databaseClean, <span class="dt">violenciaPolicialOrd =</span> <span class="dv">0</span>)
+databaseClean<span class="op">$</span>violenciaPolicialOrd[databaseClean<span class="op">$</span>violencia_policial <span class="op">==</span><span class="st"> </span><span class="dv">5</span>] &lt;-<span class="st"> </span><span class="dv">0</span>
+databaseClean<span class="op">$</span>violenciaPolicialOrd[databaseClean<span class="op">$</span>violencia_policial <span class="op">==</span><span class="st"> </span><span class="dv">4</span>] &lt;-<span class="st"> </span><span class="dv">1</span>
+databaseClean<span class="op">$</span>violenciaPolicialOrd[databaseClean<span class="op">$</span>violencia_policial <span class="op">==</span><span class="st"> </span><span class="dv">3</span>] &lt;-<span class="st"> </span><span class="dv">2</span>
+databaseClean<span class="op">$</span>violenciaPolicialOrd[databaseClean<span class="op">$</span>violencia_policial <span class="op">==</span><span class="st"> </span><span class="dv">2</span>] &lt;-<span class="st"> </span><span class="dv">3</span>
+databaseClean<span class="op">$</span>violenciaPolicialOrd[databaseClean<span class="op">$</span>violencia_policial <span class="op">==</span><span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> </span><span class="dv">4</span>
+
+databaseClean &lt;-<span class="st"> </span><span class="kw">mutate</span>(databaseClean, <span class="dt">violenciaPolicialTodosDias =</span> <span class="kw">ifelse</span>(databaseClean<span class="op">$</span>violencia_policial <span class="op">==</span><span class="st"> </span>
+<span class="st">    </span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>))
+
+<span class="co"># Recodificar VIs categoricas</span>
+databaseClean &lt;-<span class="st"> </span><span class="kw">mutate</span>(databaseClean, <span class="dt">esgotamentoSim =</span> <span class="kw">ifelse</span>(esgotamento <span class="op">==</span><span class="st"> </span>
+<span class="st">    </span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>))
+databaseClean &lt;-<span class="st"> </span><span class="kw">mutate</span>(databaseClean, <span class="dt">classeBaixa =</span> <span class="kw">ifelse</span>(classe_social <span class="op">==</span><span class="st"> </span>
+<span class="st">    </span><span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">0</span>))
+databaseClean &lt;-<span class="st"> </span><span class="kw">mutate</span>(databaseClean, <span class="dt">generoMulher =</span> <span class="kw">ifelse</span>(genero <span class="op">==</span><span class="st"> </span><span class="dv">2</span>, <span class="dv">1</span>, 
+    <span class="dv">0</span>))
+databaseClean &lt;-<span class="st"> </span><span class="kw">mutate</span>(databaseClean, <span class="dt">racaNegroMulato =</span> <span class="kw">ifelse</span>(raca <span class="op">==</span><span class="st"> </span><span class="dv">2</span> <span class="op">|</span><span class="st"> </span>
+<span class="st">    </span>raca <span class="op">==</span><span class="st"> </span><span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">0</span>))</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#---------------------------------#</span>
 <span class="co"># MODELO GLM Binomial</span>
 <span class="co">#---------------------------------#</span>
@@ -301,6 +346,7 @@ AIC                         29722.120             29722.120                    2
 </div>
 <div id="modelo-de-regressao-ordinal-cumulative-link-models" class="section level2">
 <h2>Modelo de Regressão Ordinal (Cumulative Link Models)</h2>
+<p>O modelo de regressão ordinal se baseia no cálculo do efeito da VI em relação ao aumento de uma unidade na VD, ou seja o efeito médio de “saltar” de uma categoria mais baixa para uma mais alta.</p>
 <div id="pacotes" class="section level3">
 <h3>Pacotes</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;ordinal&quot;</span>)

@@ -30,24 +30,31 @@ opts_knit$set(width=75)
 
 # Modelos Categóricos de Regressão 
 
+##### Carregar e tratar dados
+
 ```{r, echo=F}
+# carregar banco de dados
 load("~/Documents/Consultorias/Analytique/Projetos/aulas_analisededados/aulas_particulares/Projeto1/dados/Latinobarometro_2015_Eng.rdata")
 ```
  
-```{r, echo = F}
+```{r, eval=F}
+# carregar banco de dados
+load("Latinobarometro_2015_Eng.rdata")
+```
+ 
+```{r}
 # selecionar colunas no banco por nome
-database <- Latinobarometro_2015_Eng[,c("P20TGB.A","P21ST.C","P32N", "P63NJ.G", "S23", "S12", "S6", "S24.K", "S18")]
+database <- Latinobarometro_2015_Eng[,c("P20TGB.A","P21ST.C","P32N",
+                                        "P63NJ.G", "S23", "S12",
+                                        "S6", "S24.K", "S18")]
 
 # renomear colunas
-colnames(database) <- c("conversa_sobre_politica","participa_protestos","interesse_político", "violencia_policial", "raca", "genero", "classe_social", "esgotamento", "escolaridade")
+colnames(database) <- c("conversa_sobre_politica","participa_protestos",
+                        "interesse_político", "violencia_policial", 
+                        "raca", "genero", "classe_social", 
+                        "esgotamento", "escolaridade")
 
-# selecionar apenas Brasil
-# database <- database[database$PAIS == 'BRASIL',]
-```
-
-```{r, echo=F}
-
-# selecionar casos completos
+# selecionar casos completos (remover missing cases)
 databaseClean <- database[complete.cases(database),] 
 ```
 
@@ -56,7 +63,7 @@ databaseClean <- database[complete.cases(database),]
 Utilizamos o modelo de regressão logística binomial quando o fenômeno de interesse assume duas categorias (0 e 1). Estima-se os efeitos das variáveis independentes sobre a chance da manifestação do fenômeno (1) em relação ao valor 0. Por exemplo, no nosso primeiro modelo vamos estimar o efeito da percepção da `violencia policial` (presença de violência policial quase todos os dias) sobre a chance de `já ter participado de protestos` (1), em relação a `poderia participar` + `nunca participaria` (0).
 
 
-```{r, echo=F}
+```{r}
 # carregar pacote de visualizacao de modelos estatisticos
 library(stargazer)
 
@@ -64,8 +71,7 @@ library(stargazer)
 library(dplyr)
 ```
 
-```{r, echo = F}
-
+```{r}
 ## Recodificar VD 
 databaseClean <- mutate(databaseClean, participa_protestoParticipou = ifelse(databaseClean$participa_protestos == 1, 1, 0))
 
@@ -161,6 +167,8 @@ stargazer(modelo1, type = "text", title = "Resultados do Modelo", style = "ajps"
 ```
 
 ## Modelo de Regressão Ordinal (Cumulative Link Models)
+
+O modelo de regressão ordinal se baseia no cálculo do efeito da VI em relação ao aumento de uma unidade na VD, ou seja o efeito médio de "saltar" de uma categoria mais baixa para uma mais alta.
 
 ### Pacotes
 
