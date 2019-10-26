@@ -1,4 +1,4 @@
-DHT11_temp, DHT11_umidade, NTC_temp
+timestamp, DHT11_temp, DHT11_umidade, NTC_temp
 1572039346,27,52,24.60
 1572039347,27,52,24.60
 1572039348,27,52,24.60
